@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.modal-content {
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.btn-primary {
+    background-color: #198754; /* Green */
+    border: none;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.table-success th {
+    background-color: #198754 !important;
+    color: white;
+}
