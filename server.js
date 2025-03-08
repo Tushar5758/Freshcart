@@ -6,8 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const db = new sqlite3.Database("grocery.db");
-
+const db = new sqlite3.Database("database.db");
 
 db.run(`CREATE TABLE IF NOT EXISTS inventory (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,7 +22,6 @@ db.run(`CREATE TABLE IF NOT EXISTS bills (
     date TEXT,
     total_amount REAL
 )`);
-
 
 app.post("/addProduct", (req, res) => {
     const { name, price, stock, unit, category } = req.body;
@@ -41,7 +39,14 @@ app.get("/getBills", (req, res) => {
 });
 
 app.delete("/deleteProduct/:id", (req, res) => {
-    db.run("DELETE FROM inventory WHERE id = ?", req.params.id, () => res.send({ message: "Deleted!" }));
+    db.run("DELETE FROM inventory WHERE id=?", req.params.id, () => res.send({ message: "Deleted!" }));
+});
+
+app.put("/updateProduct/:id", (req, res) => {
+    const { name, price, stock, unit, category } = req.body;
+    db.run("UPDATE inventory SET name=?, price=?, stock=?, unit=?, category=? WHERE id=?", 
+           [name, price, stock, unit, category, req.params.id], 
+           () => res.send({ message: "Updated!" }));
 });
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));

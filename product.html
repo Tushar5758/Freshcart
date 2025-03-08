@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page - BigBasket Clone</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8f9fa; }
+        .navbar { background: #28a745 !important; }
+        .navbar-brand, .navbar input, .navbar button { color: white !important; }
+        .product-container { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: 20px; }
+        .product-image { max-width: 100%; border-radius: 10px; }
+        .price { font-size: 24px; font-weight: bold; color: #28a745; }
+        .mrp { text-decoration: line-through; color: grey; }
+        .discount { color: red; font-weight: bold; }
+        .customer-reviews { margin-top: 30px; }
+        .comment-box { width: 100%; margin-top: 10px; }
+        .review { background: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px; }
+        .rating { color: gold; }
+        .btn-primary { background: #28a745; border: none; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">BigBasket Clone</a>
+            <input class="form-control w-50 mx-3" type="search" placeholder="Search for Products..">
+            <button class="btn btn-light">Search</button>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="product.jpg" alt="Product Image" class="product-image">
+            </div>
+            <div class="col-md-6 product-container">
+                <h2>Product Name</h2>
+                <p class="mrp">MRP: ₹100.00</p>
+                <p class="price">Price: ₹80 <span class="discount">(20% OFF)</span></p>
+                <p><strong>Description:</strong> High-quality product sourced directly from trusted suppliers. Perfect for everyday use.</p>
+                <label for="quantity">Quantity:</label>
+                <select id="quantity" class="form-select w-50">
+                    <option>1 kg</option>
+                    <option>500 g</option>
+                    <option>250 g</option>
+                </select>
+                <button class="btn btn-danger mt-3">Add to Basket</button>
+            </div>
+        </div>
+
+        <div class="customer-reviews">
+            <h3>Customer Reviews</h3>
+            <div class="review">
+                <p><strong>John Doe:</strong> <span class="rating">★★★★★</span> Excellent quality and fresh!</p>
+            </div>
+            <div class="review">
+                <p><strong>Jane Smith:</strong> <span class="rating">★★★★☆</span> Great taste and worth the price.</p>
+            </div>
+            <h4 class="mt-4">Add a Review</h4>
+            <textarea class="form-control comment-box" placeholder="Write a review..."></textarea>
+            <button class="btn btn-primary mt-2">Submit</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
