@@ -21,23 +21,11 @@
                     <th>Stock</th>
                     <th>Unit</th>
                     <th>Category</th>
+                    <th>Image</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="inventoryTable"></tbody>
-        </table>
-
-        <!-- Bills Table -->
-        <h4 class="mt-4">Bills</h4>
-        <table class="table table-bordered">
-            <thead class="table-primary">
-                <tr>
-                    <th>Bill ID</th>
-                    <th>Date</th>
-                    <th>Total Amount</th>
-                </tr>
-            </thead>
-            <tbody id="billsTable"></tbody>
         </table>
     </div>
 
@@ -59,6 +47,7 @@
                         <option value="pieces">pieces</option>
                     </select>
                     <input type="text" id="category" placeholder="Category" class="form-control mb-2">
+                    <input type="file" id="productImage" class="form-control mb-2">
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -68,33 +57,7 @@
         </div>
     </div>
 
-    <!-- Update Product Modal -->
-    <div class="modal fade" id="updateProductModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Update Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="updateId">
-                    <input type="text" id="updateName" placeholder="Name" class="form-control mb-2">
-                    <input type="number" id="updatePrice" placeholder="Price" class="form-control mb-2">
-                    <input type="number" id="updateStock" placeholder="Stock" class="form-control mb-2">
-                    <select id="updateUnit" class="form-control mb-2">
-                        <option value="kg">kg</option>
-                        <option value="litre">litre</option>
-                        <option value="pieces">pieces</option>
-                    </select>
-                    <input type="text" id="updateCategory" placeholder="Category" class="form-control mb-2">
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-primary" onclick="updateProduct()">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Update Product Modal - Will be created dynamically -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
