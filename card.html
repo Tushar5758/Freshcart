@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Page</title>
+  <link rel="stylesheet" href="card.css">
+  <style>
+    /* Optional: Smooth transition for border colors */
+    input {
+      transition: border-color 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Left Side -->
+    <div class="payment-methods">
+      <h3>Payment methods</h3>
+      <div class="method active" onclick="selectMethod('card')">Payment by card</div>
+      <div class="method" onclick="selectMethod('internet')">Internet banks</div>
+      <div class="method" onclick="selectMethod('apple_google')">Apple/Google pay</div>
+    </div>
+
+    <!-- Center Form -->
+    <div class="payment-form" id="paymentForm">
+      <!-- Centering the card image -->
+      <div class="payment-img-container">
+        <img src="image/payment.png" alt="Card Types">
+      </div>
+
+      <label for="cardNumber">Card number</label>
+      <input type="text" id="cardNumber" placeholder="0987 4534 2323 5555">
+
+      <label for="expiryDate">Expiry date</label>
+      <input type="text" id="expiryDate" placeholder="MM/YY">
+
+      <label for="cvv">CVV</label>
+      <input type="text" id="cvv" placeholder="CVV">
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="example@email.com">
+
+      <button class="pay-now-btn" onclick="payNow()">PAY NOW</button>
+
+      <div class="success-message" id="successMessage" style="display: none;">
+        ✅ Payment Successful! Thank you for your payment.
+      </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="order-info">
+      <h3>Order information</h3>
+      <p><strong>Order description:</strong></p>
+      <p>Test payment</p>
+      <img src="image/payment.png" alt="Order summary image">
+    </div>
+
+  </div>
+
+  <!-- Updated Script -->
+  <script>
+    function selectMethod(method) {
+      const methods = document.querySelectorAll('.method');
+      methods.forEach(item => item.classList.remove('active'));
+
+      if (method === 'card') {
+        document.getElementById('paymentForm').style.display = 'block';
+        methods[0].classList.add('active');
+      } else if (method === 'internet') {
+        document.getElementById('paymentForm').style.display = 'none';
+        methods[1].classList.add('active');
+      } else if (method === 'apple_google') {
+        document.getElementById('paymentForm').style.display = 'none';
+        methods[2].classList.add('active');
+      }
+    }
+
+    // Show the card payment form by default
+    window.onload = () => {
+      document.getElementById('paymentForm').style.display = 'block';
+    };
+  </script>
+
+  <!-- Link the External Validation JS -->
+  <script src="validation.js"></script>
+
+</body>
+</html>

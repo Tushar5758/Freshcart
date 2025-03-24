@@ -1,0 +1,141 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+}
+
+.container {
+    width: 900px;
+    margin: 50px auto;
+    display: flex;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Left: Payment Methods */
+.payment-methods {
+    width: 25%;
+    background-color: #f9f9f9;
+    border-right: 1px solid #eee;
+    padding: 20px;
+}
+
+.payment-methods h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.method {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.method.active {
+    color: #69c600;
+    font-weight: bold;
+}
+
+.method:hover {
+    color: #69c600;
+}
+
+.method::before {
+    content: "▶";
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+/* Center: Payment Form */
+.payment-form {
+    width: 50%;
+    padding: 30px;
+    display: none; /* Hide initially, will show if needed */
+}
+
+/* Center image container */
+.payment-img-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.payment-form img {
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Form Labels and Inputs */
+.payment-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 14px;
+}
+
+.payment-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Pay Button */
+.pay-now-btn {
+    width: 100%;
+    background-color: #69c600;
+    color: #fff;
+    font-size: 16px;
+    padding: 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.pay-now-btn:hover {
+    background-color: #5ab100;
+}
+
+/* Right: Order Info */
+.order-info {
+    width: 25%;
+    background-color: #fafafa;
+    padding: 20px;
+    border-left: 1px solid #eee;
+}
+
+.order-info h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.order-info p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.order-info img {
+    width: 100%;
+    max-width: 150px;
+}
+
+/* Success Message */
+.success-message {
+    display: none;
+    margin-top: 20px;
+    font-size: 16px;
+    color: green;
+    text-align: center;
+}
