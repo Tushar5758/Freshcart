@@ -1,3 +1,9 @@
+// Add this function to your products.js file
+function viewProductDetails(itemId) {
+    // Navigate to the product detail page with the product ID as a parameter
+    window.location.href = `product.html?id=${itemId}`;
+}
+
 function fetchInventory() {
     fetch("http://localhost:3000/getInventory")
     .then(res => res.json())
@@ -21,8 +27,8 @@ function fetchInventory() {
             const imageSrc = item.image ? `http://localhost:3000/image/${item.id}` : 'https://via.placeholder.com/50';
             productSlider1.innerHTML += `
                 <div class="swiper-slide box">
-                    <img src="${imageSrc}" class="img-thumbnail">
-                    <h1>${item.name}</h1>
+                    <img src="${imageSrc}" class="img-thumbnail" onclick="viewProductDetails(${item.id})" style="cursor: pointer;">
+                    <h1 onclick="viewProductDetails(${item.id})" style="cursor: pointer;">${item.name}</h1>
                     <div class="price">$${item.price.toFixed(2)}/- per ${item.unit || 'unit'}</div>
                     <div class="stars">
                         <i class="fa fa-star"></i>
@@ -42,8 +48,8 @@ function fetchInventory() {
             const imageSrc = item.image ? `http://localhost:3000/image/${item.id}` : 'https://via.placeholder.com/50';
             productSlider2.innerHTML += `
                 <div class="swiper-slide box">
-                    <img src="${imageSrc}" class="img-thumbnail">
-                    <h1>${item.name}</h1>
+                    <img src="${imageSrc}" class="img-thumbnail" onclick="viewProductDetails(${item.id})" style="cursor: pointer;">
+                    <h1 onclick="viewProductDetails(${item.id})" style="cursor: pointer;">${item.name}</h1>
                     <div class="price">$${item.price.toFixed(2)}/- per ${item.unit || 'unit'}</div>
                     <div class="stars">
                         <i class="fa fa-star"></i>

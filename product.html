@@ -3,67 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Page - BigBasket Clone</title>
+    <title>Product Details - BigBasket Clone</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        body { font-family: Arial, sans-serif; background: #f8f9fa; }
-        .navbar { background: #28a745 !important; }
-        .navbar-brand, .navbar input, .navbar button { color: white !important; }
-        .product-container { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: 20px; }
-        .product-image { max-width: 100%; border-radius: 10px; }
-        .price { font-size: 24px; font-weight: bold; color: #28a745; }
-        .mrp { text-decoration: line-through; color: grey; }
-        .discount { color: red; font-weight: bold; }
-        .customer-reviews { margin-top: 30px; }
-        .comment-box { width: 100%; margin-top: 10px; }
-        .review { background: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px; }
-        .rating { color: gold; }
-        .btn-primary { background: #28a745; border: none; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f8f9fa; 
+        }
+        .navbar { 
+            background: #28a745 !important; 
+        }
+        .navbar-brand, .navbar-dark .navbar-nav .nav-link { 
+            color: white !important; 
+        }
+        .search-form {
+            width: 50%;
+            margin-right: 1rem;
+        }
+        .product-container { 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            margin-top: 20px; 
+            transition: transform 0.3s ease;
+        }
+        .product-image { 
+            max-width: 100%; 
+            border-radius: 10px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .price { 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #28a745; 
+        }
+        .mrp { 
+            text-decoration: line-through; 
+            color: grey; 
+        }
+        .discount { 
+            color: red; 
+            font-weight: bold; 
+        }
+        .btn-add-to-cart {
+            background: #28a745;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-add-to-cart:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        .product-details {
+            margin-top: 20px;
+        }
+        .product-details h4 {
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+            color: #333;
+        }
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #28a745;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .stock-info {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .in-stock {
+            background-color: #e8f5e9;
+            color: #28a745;
+        }
+        .low-stock {
+            background-color: #fff8e1;
+            color: #ffa000;
+        }
+        .out-of-stock {
+            background-color: #ffebee;
+            color: #d50000;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">BigBasket Clone</a>
-            <input class="form-control w-50 mx-3" type="search" placeholder="Search for Products..">
-            <button class="btn btn-light">Search</button>
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-shopping-basket me-2"></i>BigBasket Clone
+            </a>
+            <div class="search-form">
+                <input class="form-control" type="search" placeholder="Search for Products..">
+            </div>
+            <button class="btn btn-light" id="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="btn btn-light ms-2" id="cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+            </button>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                <img src="product.jpg" alt="Product Image" class="product-image">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Products
+        </a>
+        
+        <div class="row mt-3">
+            <div class="col-md-5">
+                <img src="" id="product-image" alt="Product Image" class="product-image">
             </div>
-            <div class="col-md-6 product-container">
-                <h2>Product Name</h2>
-                <p class="mrp">MRP: ₹100.00</p>
-                <p class="price">Price: ₹80 <span class="discount">(20% OFF)</span></p>
-                <p><strong>Description:</strong> High-quality product sourced directly from trusted suppliers. Perfect for everyday use.</p>
-                <label for="quantity">Quantity:</label>
-                <select id="quantity" class="form-select w-50">
-                    <option>1 kg</option>
-                    <option>500 g</option>
-                    <option>250 g</option>
-                </select>
-                <button class="btn btn-danger mt-3">Add to Basket</button>
+            <div class="col-md-7 product-container">
+                <h2 id="product-name">Product Name</h2>
+                <div class="stars mt-2">
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star-half-alt text-warning"></i>
+                </div>
+                <p class="mrp mt-3">MRP: ₹<span id="product-mrp">100.00</span></p>
+                <p class="price">Price: ₹<span id="product-price">80</span> <span class="discount" id="product-discount">(20% OFF)</span></p>
+                
+                <div id="stock-display" class="stock-info in-stock">
+                    <i class="fas fa-check-circle me-1"></i> <span id="product-stock">100</span> <span id="product-unit">kg</span> available
+                </div>
+                
+                <div class="mt-4">
+                    <label for="quantity">Quantity:</label>
+                    <select id="quantity" class="form-select w-50 mt-2">
+                        <option value="1">1 <span id="unit-display">kg</span></option>
+                        <option value="0.5">500 g</option>
+                        <option value="0.25">250 g</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-add-to-cart mt-4" onclick="addToCart()">
+                    <i class="fas fa-shopping-cart me-2"></i> Add to Basket
+                </button>
+                
+                <div class="product-details">
+                    <h4>Product Details</h4>
+                    <p id="product-category"><strong>Category:</strong> <span>Fresh Vegetables</span></p>
+                    <p><strong>Description:</strong> <span id="product-description">High-quality product sourced directly from trusted suppliers. Perfect for everyday use.</span></p>
+                </div>
             </div>
-        </div>
-
-        <div class="customer-reviews">
-            <h3>Customer Reviews</h3>
-            <div class="review">
-                <p><strong>John Doe:</strong> <span class="rating">★★★★★</span> Excellent quality and fresh!</p>
-            </div>
-            <div class="review">
-                <p><strong>Jane Smith:</strong> <span class="rating">★★★★☆</span> Great taste and worth the price.</p>
-            </div>
-            <h4 class="mt-4">Add a Review</h4>
-            <textarea class="form-control comment-box" placeholder="Write a review..."></textarea>
-            <button class="btn btn-primary mt-2">Submit</button>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get product ID from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        
+        // Function to fetch and display product details
+        // Function to fetch and display product details
+function fetchProductDetails() {
+    if (!productId) {
+        console.error("No product ID provided");
+        return;
+    }
+    
+    fetch(`http://localhost:3000/getInventory`)
+        .then(response => response.json())
+        .then(data => {
+            const product = data.find(item => item.id == productId);
+            
+            if (!product) {
+                console.error("Product not found");
+                return;
+            }
+            
+            // Populate product details
+            document.getElementById('product-name').textContent = product.name;
+            document.getElementById('product-price').textContent = product.price;
+            
+            // Calculate MRP and discount (for demonstration, assuming 20% discount)
+            const mrp = (product.price * 1.2).toFixed(2);
+            document.getElementById('product-mrp').textContent = mrp;
+            document.getElementById('product-discount').textContent = "(20% OFF)";
+            
+            // Set product image - use the updated image loading logic
+            const productImage = document.getElementById('product-image');
+            if (product.image) {
+                // Use the same image loading approach as in script.js
+                productImage.src = `http://localhost:3000/image/${product.id}`;
+            } else {
+                // Fallback to placeholder if no image
+                productImage.src = 'https://via.placeholder.com/400x300?text=Product+Image';
+            }
+            
+            // Set stock information
+            document.getElementById('product-stock').textContent = product.stock;
+            document.getElementById('product-unit').textContent = product.unit;
+            
+            // Update unit display in dropdown
+            document.querySelectorAll('#quantity option').forEach(option => {
+                const unitText = option.textContent.split(' ').pop();
+                option.textContent = option.textContent.replace(unitText, product.unit);
+            });
+            
+            // Set category
+            document.querySelector('#product-category span').textContent = product.category || 'General';
+            
+            // Update stock status display
+            const stockDisplay = document.getElementById('stock-display');
+            if (product.stock > 10) {
+                stockDisplay.className = 'stock-info in-stock';
+                stockDisplay.innerHTML = `<i class="fas fa-check-circle me-1"></i> ${product.stock} ${product.unit} available`;
+            } else if (product.stock > 0) {
+                stockDisplay.className = 'stock-info low-stock';
+                stockDisplay.innerHTML = `<i class="fas fa-exclamation-circle me-1"></i> Only ${product.stock} ${product.unit} left!`;
+            } else {
+                stockDisplay.className = 'stock-info out-of-stock';
+                stockDisplay.innerHTML = `<i class="fas fa-times-circle me-1"></i> Out of Stock`;
+            }
+        })
+        .catch(error => console.error("Error fetching product details:", error));
+}
+        
+        // Function to handle Add to Cart
+        function addToCart() {
+            // Retrieve the selected quantity
+            const quantity = document.getElementById('quantity').value;
+            
+            // Here you would implement the actual cart functionality
+            // For demonstration, just log to console and show animation
+            console.log(`Added item #${productId} with quantity ${quantity} to cart`);
+            
+            // Add animation to the cart button
+            const cartBtn = document.getElementById('cart-btn');
+            cartBtn.classList.add('btn-danger');
+            
+            // Reset animation after completion
+            setTimeout(() => {
+                cartBtn.classList.remove('btn-danger');
+            }, 1000);
+            
+            // Show success message
+            alert('Product added to your basket!');
+        }
+        
+        // Load product details when page loads
+        window.onload = fetchProductDetails;
+    </script>
 </body>
 </html>
