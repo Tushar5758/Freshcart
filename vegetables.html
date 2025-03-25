@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vegetables List</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/PNG" href="image/favicon.PNG">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        .container { display: flex; flex-wrap: wrap; padding-left: 40px; justify-content: center; gap: 30px; margin-top: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 200px; text-align: center; }
+        .card img { width: 100%; border-radius: 10px; }
+        .button { background-color: #28a745; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .button:hover { background-color: #218838; }
+        #count_cart { background-color: rgb(71, 179, 89); color: white; border-radius: 50%; font-size: 11px; padding: 7px; top: 4px; right: 190px; position: absolute; display: none; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">  <i class="fa fa-shopping-basket"></i> FreshCart </a>
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#features">features</a>
+            <a href="#products">products</a>
+            <a href="#categories">categories</a>
+            <a href="#reviews">reviews</a>
+        </nav>
+        <div class="icons">
+            <div class="fa fa-bars" id="menu-btn"></div>
+            <div class="fa fa-search" id="search-btn"></div>
+            <span id="count_cart">0</span>
+            <div onclick="goToCart()" class="fa fa-shopping-cart" id="cart-btn"></div>
+            <div class="fa fa-user" id="logi-btn"></div>
+        </div>
+    </header>
+
+    <h1>Vegetables</h1>
+    <div class="container" id="vegetable-list"></div>
+
+    <script>
+        const vegetables = [
+            { name: "Cabbage", image: "https://www.bigbasket.com/media/uploads/p/l/40023473_6-fresho-cabbage-organically-grown.jpg", price: "$20" },
+            { name: "Carrot", image: "https://www.bigbasket.com/media/uploads/p/l/10000381_12-fresho-carrot-red.jpg", price: "$10" },
+            { name: "Potato", image: "https://www.bbassets.com/media/uploads/p/l/40047637_5-fresho-potato-chandramukhi-organically-grown.jpg", price: "$40" },
+            { name: "Beans", image: "https://www.bigbasket.com/media/uploads/p/l/10000276_15-fresho-beans-cowpea.jpg", price: "$30" },
+            { name: "Coriander Leaves", image: "https://www.bbassets.com/media/uploads/p/l/10000097_22-fresho-coriander-leaves.jpg", price: "$50" },
+            { name: "Palak", image: "https://www.bigbasket.com/media/uploads/p/l/20000979_13-fresho-palak-cleaned-without-roots.jpg", price: "$70" },
+        ];
+
+        const container = document.getElementById("vegetable-list");
+
+        
+
+        vegetables.forEach(veg => {
+            const card = document.createElement("div");
+            card.className = "card";
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let existingProduct = cart.find(item => item.name === veg.name);
+
+            card.innerHTML = `
+                <img src="${veg.image}" alt="${veg.name}">
+                <h3>${veg.name}</h3>
+                <h3>${veg.price}</h3>
+                ${existingProduct ? 
+                    `<button onclick="Decrease_Quantity(this, '${veg.name}')"> - </button>
+                     <span id="quantity-${veg.name}">${existingProduct.quantity}</span>
+                     <button onclick="Increase_Quantity(this, '${veg.name}')"> + </button>` 
+                    : `<button class="button" onclick="addToCart('${veg.name}', '${veg.price}', '${veg.image}', this)">Add to Cart</button>`
+                }
+            `;
+
+            container.appendChild(card);
+        });
+        let cartCount=0;
+
+        function addToCart(name, price, image, button) {
+            cartCount++;
+            document.getElementById("count_cart").innerText = cartCount;
+            document.getElementById("count_cart").style.display = "inline-block"; // Make it visible
+
+
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let existingProduct = cart.find(item => item.name === name);
+
+            if (existingProduct) {
+                existingProduct.quantity++;
+            } else {
+                cart.push({ name, price, image, quantity: 1 });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            button.outerHTML = `<button onclick="Decrease_Quantity(this, '${name}')"> - </button>
+                                <span id="quantity-${name}">1</span>
+                                <button onclick="Increase_Quantity(this, '${name}')"> + </button>`;
+
+            
+        }
+
+        function Increase_Quantity(button, name) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let product = cart.find(item => item.name === name);
+
+            if (product) {
+                product.quantity++;
+                document.getElementById(`quantity-${name}`).innerText = product.quantity;
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            
+
+
+
+        }
+
+        function Decrease_Quantity(button, name) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let productIndex = cart.findIndex(item => item.name === name);
+
+            if (productIndex !== -1) {
+                cart[productIndex].quantity--;
+                if (cart[productIndex].quantity === 0) {
+                    cart.splice(productIndex, 1);
+                    button.parentElement.innerHTML = `<button class="button" onclick="addToCart('${name}', '${cart[productIndex]?.price}', '${cart[productIndex]?.image}', this)">Add to Cart</button>`;
+                } else {
+                    document.getElementById(`quantity-${name}`).innerText = cart[productIndex].quantity;
+                }
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            ;
+        }
+
+        function goToCart() {
+            window.location.href = "cart.html";
+        }
+
+
+    </script>
+</body>
+</html>

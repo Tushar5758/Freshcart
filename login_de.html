@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap Form Centered Below Navbar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #blank {
+            margin-top: 20px; /* Adjusted space below navbar */
+            background-color: rgb(229, 218, 218);
+            
+            padding: 80px;
+            margin-bottom: 100px;
+            border-radius: 12px;
+            box-shadow: 2px 2px 10px rgba(86, 29, 29, 0.1);
+            font-family:sans-serif bold;
+        }
+        input {
+            width: 100%;
+        }
+        body {
+            background: url('background.jpg') center/cover no-repeat;
+            position: relative;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(7, 113, 43, 0.2); /* White transparent overlay */
+    backdrop-filter: blur(2px); /* Applies blur */
+    z-index: -1; /* Keeps the overlay behind the content */
+}
+.hidden
+{
+  visibility: hidden;
+}
+
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+    </nav>
+
+    <!-- Centered Form -->
+    <div id="form" class="container d-flex justify-content-center align-items-center">
+        <div id="blank" class="col-md-6">
+            <h4 class="text-center" style="padding-top: 10px;">Login Form</h4>
+            <form id="register" onsubmit=" return check()">
+                <!--
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" placeholder="enter your name"  name="uname" class="form-control" id="name">
+
+                    <span id="nameError" style="color: red;" class="error"></span>
+                </div>-->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address:</label>
+                    <input type="text"  id="email">
+                    <span id="mailError" style="color: red;" class="error"></span>
+
+                </div>
+                <!--
+                <div class="mb-3">
+                    <label for="number" class="form-label">Mobile Number:</label>
+                    <input type="text" class="form-control" id="number">
+                    <span id="phoneerror" style="color: red;" class="error"></span>
+
+                </div>-->
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="Password">
+                    <span id="passwordError" style="color: red;" class="error"></span>
+
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function check()
+      {
+        var name=document.getElementById("name").value;
+        var nameid=document.getElementById("nameError");
+
+        var mail=document.getElementById("email").value;
+        var mailid=document.getElementById("mailError");
+
+        var mobile=document.getElementById("number").value;
+        var mobileid=document.getElementById("phoneerror");
+
+        var password=document.getElementById("Password").value;
+        var passwordid=document.getElementById("passwordError");
+        /*correct fields*/
+        var correctname=/^[a-zA-Z ]*$/;
+
+        var correctmail= /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        
+        if(name=="")
+      {
+        nameid.textContent="-----Please Enter Name-----";
+        event.preventDefault();
+      }
+
+      if(!correctname.test(name))
+      {
+        nameid.textContent="-----Please Enter Valid Name-----";
+        event.preventDefault();
+      }
+      if(mail=="")
+      {
+        mailid.textContent="-----Please Enter Mail-----";
+        event.preventDefault();
+      }  
+      if(!correctmail.test(mail))
+      {
+        mailid.textContent="-----Please Enter Valid Mail-----";
+        event.preventDefault();
+      }
+  
+      if(mobile=="")
+      {
+        mobileid.textContent="-----Please Enter Mobile Number-----";
+        event.preventDefault();
+      }
+      if(number.length!=10 ||isNaN(number))
+      {
+        mobileid.textContent="-----Mobile Number must have 10 Digits-----";
+        event.preventDefault();
+      }
+      if(password=="")
+      {
+       passwordid.textContent="-----Please Enter Password-----";
+        event.preventDefault();
+      }
+      
+      
+    }
+      
+    </script>
+  </body>
+</html>
