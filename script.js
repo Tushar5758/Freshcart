@@ -61,7 +61,12 @@ function openUpdateModal(id, name, price, stock, unit, category, image) {
                             <option value="litre">litre</option>
                             <option value="pieces">pieces</option>
                         </select>
-                        <input type="text" id="updateCategory" placeholder="Category" class="form-control mb-2">
+                        <select id="updateCategory" class="form-control mb-2">
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Fresh Fruits">Fresh Fruits</option>
+                        <option value="Dairy Products">Dairy Products</option>
+                        <option value="Fresh Meat">Fresh Meat</option>
+                       </select>
                         <div class="mb-2">
                             <img id="currentImagePreview" width="100" class="mb-2">
                         </div>

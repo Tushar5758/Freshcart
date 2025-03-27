@@ -1,0 +1,89 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Header/Navbar Styling */
+.header {
+    background: #28a745;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.header .logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 8px 15px;
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    background: white;
+    color: #28a745;
+    border-radius: 5px;
+}
+
+/* Fixing Content Layout */
+.hero {
+    padding: 140px 20px 60px;
+    text-align: center;
+    background: #f8f9fa;
+}
+
+.hero h1 {
+    font-size: 42px;
+    font-weight: bold;
+    color: #333;
+}
+
+.hero p {
+    font-size: 20px;
+    color: #555;
+    max-width: 800px;
+    margin: 10px auto;
+}
+
+/* Image Fix */
+.feature-img {
+    width: 100%;
+    max-width: 500px;
+    display: block;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+/* Responsive Fix */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .navbar {
+        flex-direction: column;
+    }
+}
