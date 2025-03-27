@@ -30,6 +30,131 @@ db.run(`CREATE TABLE IF NOT EXISTS bills (
     total_amount REAL
 )`);
 
+db.run(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    full_name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    house_no TEXT,
+    street_details TEXT,
+    city_district TEXT NOT NULL
+)`);
+
+// User Registration Function
+function registerUser(fullName, email, password, houseNo, streetDetails, cityDistrict) {
+    return new Promise((resolve, reject) => {
+        db.run(
+            `INSERT INTO users 
+            (full_name, email, password, house_no, street_details, city_district) 
+            VALUES (?, ?, ?, ?, ?, ?)`, 
+            [fullName, email, password, houseNo, streetDetails, cityDistrict],
+            function(err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.lastID);
+                }
+            }
+        );
+    });
+}
+
+
+// Password hashing function
+function hashPassword(password) {
+    // Using SHA-256 for password hashing
+    return crypto.createHash('sha256').update(password).digest('hex');
+}
+
+// Updated User Registration Function
+function registerUser(fullName, email, password, houseNo, streetDetails, cityDistrict) {
+    return new Promise((resolve, reject) => {
+        // Hash the password before storing
+        const hashedPassword = hashPassword(password);
+        
+        db.run(
+            `INSERT INTO users 
+            (full_name, email, password, house_no, street_details, city_district) 
+            VALUES (?, ?, ?, ?, ?, ?)`, 
+            [fullName, email, hashedPassword, houseNo, streetDetails, cityDistrict],
+            function(err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.lastID);
+                }
+            }
+        );
+    });
+}
+
+// Update the registration route to use hashing
+app.post("/register", (req, res) => {
+    const { fullName, email, password, houseNo, streetDetails, cityDistrict } = req.body;
+    
+    // Basic validation
+    if (!fullName || !email || !password || !cityDistrict) {
+        return res.status(400).json({ 
+            message: "Missing required fields" 
+        });
+    }
+    
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ 
+            message: "Invalid email format" 
+        });
+    }
+    
+    // Password strength check
+    if (password.length < 8) {
+        return res.status(400).json({ 
+            message: "Password must be at least 8 characters long" 
+        });
+    }
+    
+    registerUser(fullName, email, password, houseNo, streetDetails, cityDistrict)
+        .then(userId => {
+            res.status(201).json({ 
+                message: "User registered successfully", 
+                userId: userId 
+            });
+        })
+        .catch(err => {
+            if (err.message.includes("UNIQUE constraint failed")) {
+                res.status(409).json({ 
+                    message: "Email already registered" 
+                });
+            } else {
+                res.status(500).json({ 
+                    message: "Error registering user", 
+                    error: err.message 
+                });
+            }
+        });
+});
+
+// You might also want to add a registration route to use this function
+app.post("/register", (req, res) => {
+    const { fullName, email, password, houseNo, streetDetails, cityDistrict } = req.body;
+    
+    // TODO: Add password hashing before storing
+    registerUser(fullName, email, password, houseNo, streetDetails, cityDistrict)
+        .then(userId => {
+            res.status(201).json({ 
+                message: "User registered successfully", 
+                userId: userId 
+            });
+        })
+        .catch(err => {
+            res.status(500).json({ 
+                message: "Error registering user", 
+                error: err.message 
+            });
+        });
+});
+
 // File upload handling middleware
 const handleFileUpload = (req, res, next) => {
     if (!req.is('multipart/form-data')) {

@@ -1,4 +1,8 @@
-// Add this function to your products.js file
+// Add this function to check if user is logged in
+function isUserLoggedIn() {
+    return localStorage.getItem('isLoggedIn') === 'true';
+}
+
 function viewProductDetails(itemId) {
     // Navigate to the product detail page with the product ID as a parameter
     window.location.href = `product.html?id=${itemId}`;
@@ -122,6 +126,57 @@ function initializeSwipers() {
     });
 }
 
+// Function to handle "Add to Cart" action
+function addToCart(itemId) {
+    // Check if user is logged in
+    if (!isUserLoggedIn()) {
+        // Redirect to login page
+        alert('Please login to add items to cart');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Get existing cart from localStorage
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Fetch the product details and add to cart
+    fetch(`http://localhost:3000/getProduct/${itemId}`)
+    .then(res => res.json())
+    .then(product => {
+        // Check if product already exists in cart
+        let existingProductIndex = cart.findIndex(item => item.id === product.id);
+        if (existingProductIndex > -1) {
+            // If product exists, increase quantity
+            cart[existingProductIndex].quantity += 1;
+        } else {
+            // If product is new, add to cart with quantity 1
+            cart.push({
+                ...product,
+                quantity: 1
+            });
+        }
+
+        // Save updated cart to localStorage
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        // Add animation to the cart icon
+        const cartBtn = document.getElementById('cart-btn');
+        if (cartBtn) {
+            cartBtn.classList.add('pulse-animation');
+            setTimeout(() => {
+                cartBtn.classList.remove('pulse-animation');
+            }, 1000);
+        }
+
+        // Show alert that product was added
+        alert(`${product.name} added to cart!`);
+    })
+    .catch(error => {
+        console.error("Error fetching product details:", error);
+        alert("Failed to add product to cart");
+    });
+}
+
 // Animation for product boxes on hover
 document.addEventListener('DOMContentLoaded', function() {
     fetchInventory();
@@ -144,18 +199,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-// Function to handle "Add to Cart" action
-function addToCart(itemId) {
-    // Add animation to the cart icon
-    const cartBtn = document.getElementById('cart-btn');
-    cartBtn.classList.add('pulse-animation');
-    
-    // Reset animation after completion
-    setTimeout(() => {
-        cartBtn.classList.remove('pulse-animation');
-    }, 1000);
-    
-    console.log(`Added item #${itemId} to cart`);
-    // Here you would add actual cart functionality
-}
