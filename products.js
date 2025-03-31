@@ -1,5 +1,5 @@
 // Define the base URL for API and resource endpoints
-const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://yourproductionserver.com';
+const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://freshcart-kxkx.onrender.com';
 
 // Function to check if user is logged in
 function isUserLoggedIn() {
