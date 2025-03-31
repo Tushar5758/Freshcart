@@ -1,3 +1,6 @@
+// Define the base URL for API and resource endpoints
+const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://yourproductionserver.com';
+
 // Function to check if user is logged in
 function isUserLoggedIn() {
     return localStorage.getItem('isLoggedIn') === 'true';
@@ -9,7 +12,7 @@ function viewProductDetails(itemId) {
 }
 
 function fetchInventory() {
-    fetch("http://localhost:3000/getInventory")
+    fetch(`${baseUrl}/getInventory`)
     .then(res => res.json())
     .then(data => {
         let productSlider1 = document.getElementById("product-slider-1");
@@ -28,7 +31,7 @@ function fetchInventory() {
         const secondHalf = data.slice(halfLength);
         
         firstHalf.forEach(item => {
-            const imageSrc = item.image ? `http://localhost:3000/image/${item.id}` : 'https://via.placeholder.com/50';
+            const imageSrc = item.image ? `${baseUrl}/image/${item.id}` : 'https://via.placeholder.com/50';
             productSlider1.innerHTML += `
                 <div class="swiper-slide box">
                     <img src="${imageSrc}" class="img-thumbnail" onclick="viewProductDetails(${item.id})" style="cursor: pointer;">
@@ -49,7 +52,7 @@ function fetchInventory() {
         });
         
         secondHalf.forEach(item => {
-            const imageSrc = item.image ? `http://localhost:3000/image/${item.id}` : 'https://via.placeholder.com/50';
+            const imageSrc = item.image ? `${baseUrl}/image/${item.id}` : 'https://via.placeholder.com/50';
             productSlider2.innerHTML += `
                 <div class="swiper-slide box">
                     <img src="${imageSrc}" class="img-thumbnail" onclick="viewProductDetails(${item.id})" style="cursor: pointer;">
@@ -176,28 +179,6 @@ function generateStars(rating) {
   
 // Initialize product sliders with the correct behavior
 document.addEventListener('DOMContentLoaded', function() {
-    // const freshProducts = [
-    //   { id: 'fr1', name: 'Fresh Orange', price: 4.99, rating: 4.5, stock: 25, image: 'image/product-1.png' },
-    //   { id: 'fr2', name: 'Fresh Onion', price: 1.99, rating: 4.0, stock: 42, image: 'image/product-2.png' },
-    //   { id: 'fr3', name: 'Fresh Meat', price: 9.99, rating: 4.8, stock: 15, image: 'image/product-3.png' },
-    //   { id: 'fr4', name: 'Fresh Cabbage', price: 2.49, rating: 3.5, stock: 30, image: 'image/product-4.png' },
-    //   // Add more products as needed
-    // ];
-    
-    // // Sample data for Pantry & Household Essentials
-    // const pantryProducts = [
-    //   { id: 'pa1', name: 'Rice (5kg)', price: 12.99, rating: 4.7, stock: 18, image: 'image/product-5.png' },
-    //   { id: 'pa2', name: 'Noodles Pack', price: 3.99, rating: 4.2, stock: 50, image: 'image/product-6.png' },
-    //   { id: 'pa3', name: 'Olive Oil', price: 7.99, rating: 4.5, stock: 22, image: 'image/product-7.png' },
-    //   { id: 'pa4', name: 'Kitchen Cleaner', price: 5.99, rating: 3.8, stock: 35, image: 'image/product-8.png' },
-    //   // Add more products as needed
-    // ];
-    
-    // // Populate the product sliders
-    // freshProducts.forEach(product => createProductCard(product, 'product-slider-1'));
-    // pantryProducts.forEach(product => createProductCard(product, 'product-slider-2'));
-    
-    // Initialize the Swiper sliders
     const productSlider1 = new Swiper('.product-slider-1', {
       loop: true,
       spaceBetween: 20,
@@ -279,6 +260,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-
-
