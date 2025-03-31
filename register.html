@@ -100,8 +100,11 @@
             return;
         }
 
-        // Send registration request
-        fetch("http://localhost:3000/register", {
+        // Get the base URL dynamically from the current location
+        const baseUrl = window.location.origin;
+        
+        // Send registration request using the current origin instead of localhost
+        fetch(`${baseUrl}/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, username, email, address, password })

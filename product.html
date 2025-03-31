@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,63 +7,52 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f8f9fa;
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f8f9fa; 
         }
-
-        .navbar {
-            background: #28a745 !important;
+        .navbar { 
+            background: #28a745 !important; 
         }
-
-        .navbar-brand,
-        .navbar-dark .navbar-nav .nav-link {
-            color: white !important;
+        .navbar-brand, .navbar-dark .navbar-nav .nav-link { 
+            color: white !important; 
         }
-
         .search-form {
             width: 50%;
             margin-right: 1rem;
         }
-
-        .product-container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
+        .product-container { 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            margin-top: 20px; 
             transition: transform 0.3s ease;
         }
-
-        .product-image {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        .product-image { 
+            max-width: 100%; 
+            border-radius: 10px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
-
-        .price {
-            font-size: 24px;
-            font-weight: bold;
-            color: #28a745;
+        .price { 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #28a745; 
         }
-
         .total-price {
             font-size: 24px;
             font-weight: bold;
             color: #dc3545;
             margin-top: 10px;
         }
-
-        .mrp {
-            text-decoration: line-through;
-            color: grey;
+        .mrp { 
+            text-decoration: line-through; 
+            color: grey; 
         }
-
-        .discount {
-            color: red;
-            font-weight: bold;
+        .discount { 
+            color: red; 
+            font-weight: bold; 
         }
-
         .btn-add-to-cart {
             background: #28a745;
             border: none;
@@ -74,34 +62,28 @@
             font-weight: bold;
             transition: all 0.3s ease;
         }
-
         .btn-add-to-cart:hover {
             background: #218838;
             transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
         }
-
         .product-details {
             margin-top: 20px;
         }
-
         .product-details h4 {
             border-bottom: 2px solid #28a745;
             padding-bottom: 10px;
             color: #333;
         }
-
         .back-link {
             margin-top: 20px;
             display: inline-block;
             color: #28a745;
             text-decoration: none;
         }
-
         .back-link:hover {
             text-decoration: underline;
         }
-
         .stock-info {
             font-size: 14px;
             padding: 5px 10px;
@@ -109,29 +91,24 @@
             display: inline-block;
             margin-top: 10px;
         }
-
         .in-stock {
             background-color: #e8f5e9;
             color: #28a745;
         }
-
         .low-stock {
             background-color: #fff8e1;
             color: #ffa000;
         }
-
         .out-of-stock {
             background-color: #ffebee;
             color: #d50000;
         }
-
         /* Quantity controls styles */
         .quantity-control {
             display: flex;
             align-items: center;
             margin-top: 8px;
         }
-
         .quantity-btn {
             width: 36px;
             height: 36px;
@@ -145,15 +122,12 @@
             font-size: 16px;
             transition: all 0.2s;
         }
-
         .quantity-btn:hover {
             background: #e0e0e0;
         }
-
         .quantity-btn:active {
             background: #ccc;
         }
-
         .quantity-input {
             width: 60px;
             height: 36px;
@@ -163,17 +137,14 @@
             border-radius: 4px;
             font-size: 16px;
         }
-
         .quantity-input:focus {
             outline: none;
             border-color: #28a745;
         }
-
         .unit-label {
             margin-left: 8px;
             font-size: 16px;
         }
-
         /* Order summary styles */
         .order-summary {
             background: #f8f9fa;
@@ -182,19 +153,16 @@
             margin-top: 20px;
             border: 1px solid #ddd;
         }
-
         .order-summary h4 {
             border-bottom: 1px solid #ddd;
             padding-bottom: 10px;
             margin-bottom: 15px;
         }
-
         .summary-item {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
         }
-
         .summary-total {
             font-weight: bold;
             border-top: 1px solid #ddd;
@@ -203,7 +171,6 @@
         }
     </style>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
@@ -227,7 +194,7 @@
         <a href="index.html#products" class="back-link">
             <i class="fas fa-arrow-left"></i> Back to Products
         </a>
-
+        
         <div class="row mt-3">
             <div class="col-md-5">
                 <img src="" id="product-image" alt="Product Image" class="product-image">
@@ -242,15 +209,13 @@
                     <i class="fas fa-star-half-alt text-warning"></i>
                 </div>
                 <p class="mrp mt-3">MRP: ₹<span id="product-mrp">100.00</span></p>
-                <p class="price">Price: ₹<span id="product-price">80</span> <span class="discount"
-                        id="product-discount">(20% OFF)</span></p>
+                <p class="price">Price: ₹<span id="product-price">80</span> <span class="discount" id="product-discount">(20% OFF)</span></p>
                 <p class="total-price">Total: ₹<span id="product-total">80</span></p>
-
+                
                 <div id="stock-display" class="stock-info in-stock">
-                    <i class="fas fa-check-circle me-1"></i> <span id="product-stock">100</span> <span
-                        id="product-unit">kg</span> available
+                    <i class="fas fa-check-circle me-1"></i> <span id="product-stock">100</span> <span id="product-unit">kg</span> available
                 </div>
-
+                
                 <div class="mt-4">
                     <label for="quantity-input">Quantity:</label>
                     <div class="quantity-control">
@@ -264,7 +229,7 @@
                         <span class="unit-label" id="unit-display">kg</span>
                     </div>
                 </div>
-
+                
                 <!-- Order Summary Section -->
                 <div class="order-summary">
                     <h4>Order Summary</h4>
@@ -285,16 +250,15 @@
                         <span>₹<span id="summary-total">80</span></span>
                     </div>
                 </div>
-
+                
                 <button class="btn btn-add-to-cart mt-4" onclick="addToCart()">
                     <i class="fas fa-shopping-cart me-2"></i> Add to Basket
                 </button>
-
+                
                 <div class="product-details">
                     <h4>Product Details</h4>
                     <p id="product-category"><strong>Category:</strong> <span>Fresh Vegetables</span></p>
-                    <p><strong>Description:</strong> <span id="product-description">High-quality product sourced
-                            directly from trusted suppliers. Perfect for everyday use.</span></p>
+                    <p><strong>Description:</strong> <span id="product-description">High-quality product sourced directly from trusted suppliers. Perfect for everyday use.</span></p>
                 </div>
             </div>
         </div>
@@ -302,11 +266,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Get base URL for API calls
+        const apiBaseUrl = window.location.origin;
+        
         // Get product ID from URL parameter
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
         let currentProduct = null;
-
+        
         // Update cart count from localStorage
         function updateCartCount() {
             const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -318,81 +285,78 @@
                 cartCount.style.display = 'none';
             }
         }
-
+        
         // Function to update total price based on quantity
         function updateTotalPrice() {
             if (!currentProduct) return;
-
+            
             const quantity = parseInt(document.getElementById('quantity-input').value);
-            const price = parseFloat(currentProduct.discountedPrice); // Use discounted price
+            const price = parseFloat(currentProduct.price);
             const total = (quantity * price).toFixed(2);
-
+            
             // Update total price display
             document.getElementById('product-total').textContent = total;
-
+            
             // Update summary section
             document.getElementById('summary-quantity').textContent = quantity;
             document.getElementById('summary-total').textContent = total;
         }
-
+        
         // Function to fetch and display product details
         function fetchProductDetails() {
             if (!productId) {
                 console.error("No product ID provided");
                 return;
             }
-
-            fetch(`/getInventory`)
+            
+            fetch(`${apiBaseUrl}/getInventory`)
                 .then(response => response.json())
                 .then(data => {
                     const product = data.find(item => item.id == productId);
-
+                    
                     if (!product) {
                         console.error("Product not found");
                         return;
                     }
-
+                    
                     // Store the current product for later use
                     currentProduct = product;
-
-                    // Get the original price from database
-                    const originalPrice = parseFloat(product.price);
-
-                    // Calculate the discounted price (20% off)
-                    const discountedPrice = (originalPrice * 0.8).toFixed(2);
-
-                    // Update product pricing information
+                    
+                    // Populate product details
                     document.getElementById('product-name').textContent = product.name;
-                    document.getElementById('product-mrp').textContent = originalPrice.toFixed(2); // Original price as MRP
-                    document.getElementById('product-price').textContent = discountedPrice; // Discounted price
-                    document.getElementById('product-total').textContent = discountedPrice; // Initialize total price
-
+                    document.getElementById('product-price').textContent = product.price;
+                    document.getElementById('product-total').textContent = product.price; // Initialize total price
+                    
                     // Update summary section
                     document.getElementById('summary-product-name').textContent = product.name;
-                    document.getElementById('summary-product-price').textContent = discountedPrice;
-                    document.getElementById('summary-total').textContent = discountedPrice;
-
-                    // Store the discounted price in the current product object for calculations
-                    currentProduct.discountedPrice = discountedPrice;
-
-                    // Set product image
+                    document.getElementById('summary-product-price').textContent = product.price;
+                    document.getElementById('summary-total').textContent = product.price;
+                    
+                    // Calculate MRP and discount (for demonstration, assuming 20% discount)
+                    const mrp = (product.price * 1.2).toFixed(2);
+                    document.getElementById('product-mrp').textContent = mrp;
+                    document.getElementById('product-discount').textContent = "(20% OFF)";
+                    
+                    // Set product image - use the updated image loading logic for deployment
                     const productImage = document.getElementById('product-image');
                     if (product.image) {
-                        productImage.src = `http://localhost:3000/image/${product.id}`;
+                        // Use dynamic origin-based URL
+                        productImage.src = `${apiBaseUrl}/image/${product.id}`;
                     } else {
+                        // Fallback to placeholder if no image
                         productImage.src = 'https://via.placeholder.com/400x300?text=Product+Image';
                     }
-
+                    
                     // Set stock information
                     document.getElementById('product-stock').textContent = product.stock;
                     document.getElementById('product-unit').textContent = product.unit;
-
+                    
                     // Update unit display
                     document.getElementById('unit-display').textContent = product.unit;
-
+                    
                     // Set category
                     document.querySelector('#product-category span').textContent = product.category || 'General';
-
+                    
                     // Update stock status display
                     const stockDisplay = document.getElementById('stock-display');
                     if (product.stock > 10) {
@@ -408,6 +372,7 @@
                 })
                 .catch(error => console.error("Error fetching product details:", error));
         }
+        
         // Function to increment quantity
         function increaseQuantity() {
             const quantityInput = document.getElementById('quantity-input');
@@ -415,7 +380,7 @@
             quantityInput.value = currentValue + 1;
             updateTotalPrice();
         }
-
+        
         // Function to decrement quantity
         function decreaseQuantity() {
             const quantityInput = document.getElementById('quantity-input');
@@ -425,34 +390,36 @@
                 updateTotalPrice();
             }
         }
-
+        
         // Function to handle Add to Cart
         function addToCart() {
             if (!currentProduct) {
                 alert('Error: Product details not available.');
                 return;
             }
+            
+            // Retrieve the selected quantity
             const quantity = parseInt(document.getElementById('quantity-input').value);
-            const price = parseFloat(currentProduct.discountedPrice); // Use discounted price
+            const price = parseFloat(currentProduct.price);
             const total = quantity * price;
-
-            // Create cart item object
+            
+            // Create cart item object with dynamic URL
             const cartItem = {
                 id: currentProduct.id,
                 name: currentProduct.name,
-                price: currentProduct.discountedPrice, // Use discounted price
+                price: currentProduct.price,
                 quantity: quantity,
-                image: currentProduct.image ? `http://localhost:3000/image/${currentProduct.id}` : 'https://via.placeholder.com/400x300?text=Product+Image',
+                image: currentProduct.image ? `${apiBaseUrl}/image/${currentProduct.id}` : 'https://via.placeholder.com/400x300?text=Product+Image',
                 subtotal: total,
                 unit: currentProduct.unit
             };
-
+            
             // Get existing cart or initialize new one
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
+            
             // Check if item already exists in cart
             const existingItemIndex = cart.findIndex(item => item.id === cartItem.id);
-
+            
             if (existingItemIndex !== -1) {
                 // Update quantity if item already exists
                 cart[existingItemIndex].quantity += quantity;
@@ -461,29 +428,29 @@
                 // Add new item to cart
                 cart.push(cartItem);
             }
-
+            
             // Save to localStorage
             localStorage.setItem("cart", JSON.stringify(cart));
-
+            
             // Save to database
             saveToDatabase(cartItem);
-
+            
             // Update cart count
             updateCartCount();
-
+            
             // Show success message
             alert('Product added to your basket!');
-
+            
             // Add animation to the cart button
             const cartBtn = document.getElementById('cart-btn');
             cartBtn.classList.add('btn-danger');
-
+            
             // Reset animation after completion
             setTimeout(() => {
                 cartBtn.classList.remove('btn-danger');
             }, 1000);
         }
-
+        
         // Function to save cart item to database
         function saveToDatabase(cartItem) {
             // Create data to be sent to server
@@ -493,35 +460,34 @@
                 price: parseFloat(cartItem.price),
                 subtotal: cartItem.subtotal
             };
-
-            // Send data to server
-            fetch('/add-to-cart', {
+            
+            // Send data to server using dynamic URL
+            fetch(`${apiBaseUrl}/add-to-cart`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data)
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Item added to cart database:', data);
-                })
-                .catch(error => {
-                    console.error('Error adding item to cart database:', error);
-                });
+            .then(response => response.json())
+            .then(data => {
+                console.log('Item added to cart database:', data);
+            })
+            .catch(error => {
+                console.error('Error adding item to cart database:', error);
+            });
         }
-
+        
         // Add event listener to cart button
-        document.getElementById('cart-btn').addEventListener('click', function () {
+        document.getElementById('cart-btn').addEventListener('click', function() {
             window.location.href = 'cart.html';
         });
-
+        
         // Load product details and cart count when page loads
-        window.onload = function () {
+        window.onload = function() {
             fetchProductDetails();
             updateCartCount();
         };
     </script>
 </body>
-
 </html>

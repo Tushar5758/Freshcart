@@ -231,8 +231,11 @@
             document.getElementById("category-title").innerText = categoryTitle;
             document.title = "FreshCart - " + categoryTitle + " Products";
 
-            // Fetch products of that category from server
-            fetch(`http://localhost:3000/products?category=${category}`)
+            // Get the base URL of the current site
+            const baseUrl = window.location.origin;
+
+            // Fetch products of that category from server - using relative path instead of localhost
+            fetch(`${baseUrl}/api/products?category=${category}`)
                 .then(response => response.json())
                 .then(data => {
                     const container = document.getElementById("products");
