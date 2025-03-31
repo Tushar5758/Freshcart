@@ -165,6 +165,11 @@ app.get("/image/:id", (req, res) => {
     });
 });
 
+app.get("/healthz", (req, res) => {
+    res.status(200).send("OK");
+});
+
+
 
 
 // Serve the HTML file
