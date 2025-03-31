@@ -104,7 +104,7 @@
         const baseUrl = window.location.origin;
         
         // Send registration request using the current origin instead of localhost
-        fetch(`https://freshcart-kxkx.onrender.com/register`, {
+        fetch(`${baseUrl}/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, username, email, address, password })
