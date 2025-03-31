@@ -17,65 +17,7 @@
             background-color: #f4f7f6;
         }
 
-        /* Chatbot Specific Styles */
-        #chatbot-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        #chatbot-icon {
-            background-color: #2ecc71;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        #chatbot-icon:hover {
-            transform: scale(1.1);
-            background-color: #27ae60;
-        }
-
-        #chatbot-window {
-            width: 380px;
-            height: 500px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            display: none;
-            flex-direction: column;
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            border: 1px solid #e0e0e0;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        #chatbot-header {
-            background-color: #2ecc71;
-            color: white;
-            padding: 15px;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #chatbot-messages {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 15px;
-            background-color: #f9fafb;
-        }
+       
 
         .user-message {
             background-color: #2ecc71;
@@ -97,42 +39,7 @@
             margin-bottom: 10px;
         }
 
-        #chatbot-input-area {
-            display: flex;
-            padding: 10px;
-            background-color: white;
-            border-top: 1px solid #e0e0e0;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-        }
-
-        #chatbot-input {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            margin-right: 10px;
-        }
-
-        #chatbot-send {
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #chatbot-send:hover {
-            background-color: #27ae60;
-        }
-
+       
         @keyframes slideUp {
             from { 
                 transform: translateY(20px); 
@@ -147,6 +54,72 @@
       --orange: #008000;
       --black: #333;
     }
+    .chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #4285F4;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .chat-icon i {
+            color: white;
+            font-size: 24px;
+        }
+        
+        .chat-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 450px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            overflow: hidden;
+            display: none;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-header {
+            background-color: #4285F4;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-body {
+            height: calc(100% - 60px);
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .close-chat {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* Hide default Dialogflow header since we have our own */
+        df-messenger-chat {
+            --df-messenger-chat-header-display: none;
+        }
     
     /* Advertisement Section */
     .advertisement-container {
@@ -353,6 +326,7 @@
     
   </style>
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -374,7 +348,17 @@
   <div class="fa fa-bars" id="menu-btn"></div>
   <div class="fa fa-search" id="search-btn"></div>
   <div class="fa fa-shopping-cart" id="cart-btn"></div>
-  <div class="fa fa-user" id="logi-btn"></div>
+  
+  <!-- User profile dropdown -->
+  <div class="dropdown">
+    <div class="fa fa-user" id="profile-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false"></div>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile-btn">
+      <li><a class="dropdown-item" href="userdashboard.html">My Profile</a></li>
+      <li><a class="dropdown-item" href="orders.html">My Orders</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" id="logout-btn" href="#">Logout</a></li>
+    </ul>
+  </div>
 </div>
 
 <form class="search-form">
@@ -525,7 +509,28 @@
     </div>
   </div>
 </section>
-<!-- our categories section -->
+<div class="chat-icon" id="chatIcon">
+  <i class="fas fa-comments"></i>
+</div>
+
+<div class="chat-container" id="chatContainer">
+  <div class="chat-header">
+      <h3>Freshcart Assistant</h3>
+      <span class="close-chat" id="closeChat">&times;</span>
+  </div>
+  <div class="chat-body" id="chatBody">
+      <!-- Dialogflow will be embedded here -->
+      <df-messenger
+        project-id="YOUR_PROJECT_ID"
+        agent-id="YOUR_AGENT_ID"
+        language-code="en">
+        <df-messenger-chat
+          chat-title="Freshcart Assistant"
+          expand="true">
+        </df-messenger-chat>
+      </df-messenger>
+  </div>
+</div>
 
 <!-- footer section -->
 <section class="footer">
@@ -567,33 +572,11 @@
     </div>
   </div>
 </section>
-<button id="chat-toggle">
-  <i class="fa fa-comment"></i>
-</button>
 
-<!-- Custom chat interface -->
-<div id="chatbot-container" class="hidden">
-  <div id="chatbot-header">
-    <span>FreshCart Assistant</span>
-    <span id="close-chat" onclick="toggleChat()">✕</span>
-  </div>
-  <div id="chat-messages">
-    <div class="message bot-message">
-      Hello! Welcome to FreshCart. How can I help you today?
-    </div>
-  </div>
-  <div id="chat-input-container">
-    <input type="text" id="chat-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
-    <button id="send-button" onclick="sendMessage()">
-      <i class="fa fa-paper-plane"></i>
-    </button>
-  </div>
-</div>
 
-<!-- Optional: Dialogflow iframe as fallback -->
-<iframe id="chatbot-frame" class="hidden" height="430" width="350" 
-    src="https://bot.dialogflow.com/d07e3ca1-e4d0-49e5-871d-65f380bea036">
-</iframe>
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="script.js"></script>
@@ -601,9 +584,7 @@
 
 
 <script>
-  document.getElementById("logi-btn").addEventListener("click", function() {
-      window.location.href = "login.html"; // Redirect to Login Page
-  });
+  
   
   // Manual initialization of carousel
   document.addEventListener('DOMContentLoaded', function() {
@@ -617,71 +598,125 @@
       console.error("Error initializing carousel:", error);
     }
   });
-    // Chat Functionality Script
-    let chatSessionId = null;
+   
+   
 
-function toggleChat() {
-  const chatContainer = document.getElementById('chatbot-container');
-  const chatFrame = document.getElementById('chatbot-frame');
-  const chatToggle = document.getElementById('chat-toggle');
 
-  chatContainer.classList.toggle('visible');
-  chatFrame.classList.toggle('visible');
-  chatToggle.classList.toggle('active');
-}
 
-async function sendMessage() {
-  const chatInput = document.getElementById('chat-input');
-  const chatMessages = document.getElementById('chat-messages');
-  const message = chatInput.value.trim();
 
-  if (!message) return;
 
-  const userMessageEl = document.createElement('div');
-  userMessageEl.classList.add('message', 'user-message');
-  userMessageEl.textContent = message;
-  chatMessages.appendChild(userMessageEl);
 
-  chatInput.value = '';
-  chatMessages.scrollTop = chatMessages.scrollHeight;
 
-  try {
-    const response = await fetch('/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: message,
-        sessionId: chatSessionId
-      })
-    });
 
-    const data = await response.json();
-    chatSessionId = data.sessionId;
-
-    const botMessageEl = document.createElement('div');
-    botMessageEl.classList.add('message', 'bot-message');
-    botMessageEl.textContent = data.reply;
-    chatMessages.appendChild(botMessageEl);
-
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-  } catch (error) {
-    console.error('Error sending message:', error);
-    const errorMessageEl = document.createElement('div');
-    errorMessageEl.classList.add('message', 'bot-message');
-    errorMessageEl.textContent = 'Sorry, I am having trouble processing your request.';
-    chatMessages.appendChild(errorMessageEl);
-  }
-}
-
-function handleKeyPress(event) {
-  if (event.key === 'Enter') {
-    sendMessage();
-  }
-}
-</script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const username = localStorage.getItem('username');
+    const profileBtn = document.getElementById('profile-btn');
+    
+    if (isLoggedIn && username) {
+      // User is logged in, show welcome message (optional)
+      console.log(`Welcome back, ${username}!`);
+      
+      // Style the profile button to indicate logged-in state
+      profileBtn.classList.add('logged-in');
+      
+      // Add tooltip with username
+      profileBtn.setAttribute('title', `Logged in as: ${username}`);
+    } else {
+      // User is not logged in, clicking profile redirects to login
+      profileBtn.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent dropdown from opening
+        window.location.href = 'login.html';
+      });
+    }
+    
+    // Handle logout
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Clear login information
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('username');
+        
+        // Redirect to login page
+        window.location.href = 'login.html';
+      });
+    }
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+            const chatIcon = document.getElementById('chatIcon');
+            const chatContainer = document.getElementById('chatContainer');
+            const closeChat = document.getElementById('closeChat');
+            const chatBody = document.getElementById('chatBody');
+            let dialogflowInitialized = false;
+            
+            // Function to toggle the chat window
+            function toggleChat() {
+                if (chatContainer.style.display === 'block') {
+                    chatContainer.style.display = 'none';
+                } else {
+                    chatContainer.style.display = 'block';
+                    if (!dialogflowInitialized) {
+                        initDialogflow();
+                    }
+                }
+            }
+            
+            // Function to initialize Dialogflow messenger
+            function initDialogflow() {
+                // Replace with your Dialogflow agent ID
+                const dfMessenger = document.createElement('df-messenger');
+                dfMessenger.setAttribute('agent-id', 'freshcart-g9jc');
+                dfMessenger.setAttribute('language-code', 'en');
+                dfMessenger.setAttribute('chat-title', 'Freshcart Assistant');
+                dfMessenger.setAttribute('expand', 'true');
+                
+                // Optional: Custom styling for df-messenger
+                const style = document.createElement('style');
+                style.textContent = `
+                    df-messenger {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    
+                    df-messenger-chat {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    
+                    .chat-wrapper {
+                        height: 100% !important;
+                    }
+                    
+                    df-messenger-chat > * {
+                        box-shadow: none !important;
+                    }
+                    
+                    df-message-list {
+                        flex-grow: 1;
+                    }
+                `;
+                
+                chatBody.appendChild(style);
+                chatBody.appendChild(dfMessenger);
+                
+                dialogflowInitialized = true;
+            }
+            
+            // Event listeners
+            chatIcon.addEventListener('click', toggleChat);
+            closeChat.addEventListener('click', function() {
+                chatContainer.style.display = 'none';
+            });
+        });
+    </script>
+    
+    <!-- Dialogflow Messenger Script -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <script src="chatbot.js"></script>
 
 </body>
 </html>

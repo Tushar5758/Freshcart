@@ -1,88 +1,65 @@
-// Chatbot Functionality
-let isChatbotOpen = false;
-let sessionId = null;
+document.addEventListener("DOMContentLoaded", () => {
+    const chatbotIcon = document.getElementById("chatbot-icon");
+    const chatbotContainer = document.getElementById("chatbot-container");
+    const closeChat = document.getElementById("close-chat");
+    const chatBody = document.getElementById("chat-body");
+    const userInput = document.getElementById("user-input");
+    const sendBtn = document.getElementById("send-btn");
 
-function toggleChatbot() {
-    const chatbotWindow = document.getElementById('chatbot-window');
-    isChatbotOpen = !isChatbotOpen;
-    
-    if (isChatbotOpen) {
-        chatbotWindow.style.display = 'flex';
-    } else {
-        chatbotWindow.style.display = 'none';
-    }
-}
-
-function addMessage(text, sender) {
-    const messagesContainer = document.getElementById('chatbot-messages');
-    const messageElement = document.createElement('div');
-    
-    messageElement.classList.add(
-        'mb-2', 
-        'p-2', 
-        'rounded', 
-        sender === 'user' ? 'bg-blue-100 text-right ml-auto' : 'bg-gray-100 text-left mr-auto'
-    );
-    messageElement.style.maxWidth = '80%';
-    messageElement.innerText = text;
-    
-    messagesContainer.appendChild(messageElement);
-    
-    // Auto-scroll to bottom
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
-}
-
-function sendMessage() {
-    const inputElement = document.getElementById('chatbot-input');
-    const message = inputElement.value.trim();
-    
-    if (!message) return;
-    
-    // Add user message
-    addMessage(message, 'user');
-    
-    // Clear input
-    inputElement.value = '';
-    
-    // Send to backend
-    fetch('/chat', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            message: message,
-            sessionId: sessionId
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Store/update session ID
-        sessionId = data.sessionId;
-        
-        // Add bot response
-        addMessage(data.reply, 'bot');
-    })
-    .catch(error => {
-        console.error('Chat error:', error);
-        addMessage('Sorry, something went wrong.', 'bot');
+    // Show Chatbot on Click
+    chatbotIcon.addEventListener("click", () => {
+        chatbotContainer.style.display = "block";
     });
-}
 
-// Optional: Add a welcome message when chatbot first opens
-function initializeChatbot() {
-    const messagesContainer = document.getElementById('chatbot-messages');
-    const welcomeMessage = document.createElement('div');
-    welcomeMessage.classList.add('text-center', 'text-gray-500', 'mb-4');
-    welcomeMessage.innerText = 'Welcome to FreshCart Assistant! How can I help you today?';
-    messagesContainer.appendChild(welcomeMessage);
-}
+    // Close Chatbot
+    closeChat.addEventListener("click", () => {
+        chatbotContainer.style.display = "none";
+    });
 
-// Initialize when page loads
-document.addEventListener('DOMContentLoaded', initializeChatbot);
+    // Send Message to Chatbot
+    sendBtn.addEventListener("click", async () => {
+        const message = userInput.value.trim();
+        if (message) {
+            appendMessage("user", message);
+            userInput.value = "";
+            const response = await sendMessageToChatbot(message);
+            appendMessage("bot", response);
+        }
+    });
+
+    async function sendMessageToChatbot(message) {
+        try {
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message }),
+            });
+            const data = await response.json();
+            return data.reply || "Sorry, I didn't understand that.";
+        } catch (error) {
+            console.error("Error:", error);
+            return "Error connecting to chatbot.";
+        }
+    }
+
+    function appendMessage(sender, text) {
+        const messageDiv = document.createElement("div");
+        messageDiv.textContent = text;
+        messageDiv.style.padding = "5px";
+        messageDiv.style.margin = "5px 0";
+        messageDiv.style.borderRadius = "5px";
+
+        if (sender === "user") {
+            messageDiv.style.background = "#007bff";
+            messageDiv.style.color = "white";
+            messageDiv.style.textAlign = "right";
+        } else {
+            messageDiv.style.background = "#f1f1f1";
+            messageDiv.style.textAlign = "left";
+        }
+
+        chatBody.appendChild(messageDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+});
+

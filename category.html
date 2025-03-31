@@ -4,12 +4,221 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Category Products</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Your CSS file -->
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --orange: #008000;
+            --black: #333;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .category-header {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+        }
+        
+        .category-header h1 {
+            font-size: 2.5rem;
+            color: var(--black);
+        }
+        
+        .category-header h1 span {
+            color: var(--orange);
+        }
+        
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product {
+            background: #fff;
+            border-radius: 0.5rem;
+            text-align: center;
+            padding: 2rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .product:hover {
+            transform: scale(1.05);
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+        }
+        
+        .product img {
+            height: 15rem;
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+        
+        .product h3 {
+            font-size: 1.5rem;
+            color: var(--black);
+            margin-bottom: 0.5rem;
+        }
+        
+        .product p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product p strong {
+            color: var(--orange);
+            font-size: 1.2rem;
+        }
+        
+        .add-to-cart {
+            background-color: var(--orange);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        .add-to-cart:hover {
+            background-color: var(--black);
+            letter-spacing: 0.1rem;
+        }
+        
+        /* Back Button */
+        .back-button {
+            display: inline-block;
+            margin: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--orange);
+            color: white;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background-color: var(--black);
+        }
+        
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .product img {
+                height: 10rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- header section -->
+    <header class="header">
+        <a href="index.html" class="logo">  
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i> FreshCart 
+        </a>
 
-    <h2 id="category-title"></h2>
-    <div id="products" class="product-container"></div>
+        <nav class="navbar">
+            <a href="index.html#home">home</a>
+            <a href="index.html#features">features</a>
+            <a href="index.html#products">products</a>
+            <a href="index.html#categories">categories</a>
+            <a href="index.html#reviews">reviews</a>
+        </nav>
+
+        <div class="icons">
+            <div class="fa fa-bars" id="menu-btn"></div>
+            <div class="fa fa-search" id="search-btn"></div>
+            <div class="fa fa-shopping-cart" id="cart-btn"></div>
+            <div class="fa fa-user" id="logi-btn"></div>
+        </div>
+
+        <form class="search-form">
+            <input type="search" id="search-box" placeholder="Search Here">
+            <label for="search-box" class="fa fa-search"></label>
+        </form>
+    </header>
+    
+    <a href="index.html" class="back-button">
+        <i class="fa fa-arrow-left"></i> Back to Home
+    </a>
+
+    <div class="category-header">
+        <h1>Our <span id="category-title">Category</span> Products</h1>
+    </div>
+    
+    <div id="products" class="product-container">
+        <!-- Products will be loaded here dynamically -->
+    </div>
+
+    <!-- footer section -->
+    <section class="footer">
+        <div class="box-container">
+            <div class="box">
+                <h3> FreshCart <i class="fa fa-shopping-basket"></i></h3>
+                <p>Feel Free To Follow Us On Our Social Media Handles All The Links Are Given Below.</p>
+
+                <div class="share">
+                    <a href="#" class="fa fa-facebook"></a>
+                    <a href="#" class="fa fa-whatsapp"></a>
+                    <a href="#" class="fa fa-instagram"></a>
+                    <a href="#" class="fa fa-linkedin"></a>
+                </div>
+            </div>
+
+            <div class="box">
+                <h3> Contact Info </h3>
+                <a href="#" class="links"> <i class="fa fa-phone"></i> +91 8765783678</a>
+                <a href="#" class="links"> <i class="fa fa-phone"></i> +91 2873787678</a>
+                <a href="#" class="links"> <i class="fa fa-envolope"></i> akshatadgawand@gmail.com</a>
+                <a href="#" class="links"> <i class="fa fa-map-marker"></i> Panvel, Maharashtra</a>
+            </div>
+
+            <div class="box">
+                <h3> Quick Links </h3>
+                <a href="index.html" class="links"> <i class="fa fa-arrow-right"></i> Home</a>
+                <a href="index.html#features" class="links"> <i class="fa fa-arrow-right"></i> Features</a>
+                <a href="index.html#products" class="links"> <i class="fa fa-arrow-right"></i> Products</a>
+                <a href="index.html#categories" class="links"> <i class="fa fa-arrow-right"></i> Categories</a>
+            </div>
+
+            <div class="box">
+                <h3> NewsLetter </h3>
+                <p>Subscribe For Latest Updates</p>
+                <input type="email" placeholder="Your Email" class="email">
+                <input type="submit" value="Subscribe" class="btn">
+                <img src="image/payment.png" class="payment-img">
+            </div>
+        </div>
+    </section>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -17,39 +226,66 @@
             const urlParams = new URLSearchParams(window.location.search);
             const category = urlParams.get("category");
 
-            document.getElementById("category-title").innerText = category + " Products";
+            // Set the category title with proper capitalization
+            const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
+            document.getElementById("category-title").innerText = categoryTitle;
+            document.title = "FreshCart - " + categoryTitle + " Products";
 
             // Fetch products of that category from server
             fetch(`http://localhost:3000/products?category=${category}`)
                 .then(response => response.json())
                 .then(data => {
-                    let container = document.getElementById("products");
+                    const container = document.getElementById("products");
                     container.innerHTML = ""; // Clear previous content
 
                     if (data.length === 0) {
-                        container.innerHTML = `<p>No products found in this category.</p>`;
+                        container.innerHTML = `<p class="no-products">No products found in this category.</p>`;
                         return;
                     }
 
                     data.forEach(product => {
-                        let productDiv = document.createElement("div");
+                        const productDiv = document.createElement("div");
                         productDiv.classList.add("product");
 
                         productDiv.innerHTML = `
-                            <a href="product.html?id=${product.id}">
-                                <img src="data:image/jpeg;base64,${product.image}" alt="${product.name}">
-                            </a>
+                            <img src="data:image/jpeg;base64,${product.image}" alt="${product.name}" 
+                                 onclick="navigateToProduct(${product.id})">
                             <h3>${product.name}</h3>
-                            <p><strong>$${product.price}.00</strong> / ${product.unit}</p>
+                            <p><strong>₹${product.price}.00</strong> / ${product.unit}</p>
                             <p>${product.stock} Available</p>
-                            <button class="add-to-cart">🛒 Add To Cart</button>
+                            <button class="add-to-cart" onclick="navigateToProduct(${product.id})">
+                                <i class="fa fa-shopping-cart"></i> Add To Cart
+                            </button>
                         `;
                         container.appendChild(productDiv);
                     });
                 })
-                .catch(error => console.error("Error fetching products:", error));
+                .catch(error => {
+                    console.error("Error fetching products:", error);
+                    const container = document.getElementById("products");
+                    container.innerHTML = `<p class="error">Failed to load products. Please try again later.</p>`;
+                });
+        });
+
+        // Function to navigate to product details page
+        function navigateToProduct(productId) {
+            window.location.href = `product.html?id=${productId}`;
+        }
+
+        // Menu toggle functionality
+        document.getElementById("menu-btn").addEventListener("click", function() {
+            document.querySelector(".navbar").classList.toggle("active");
+        });
+
+        // Search toggle functionality
+        document.getElementById("search-btn").addEventListener("click", function() {
+            document.querySelector(".search-form").classList.toggle("active");
+        });
+
+        // Login button event
+        document.getElementById("logi-btn").addEventListener("click", function() {
+            window.location.href = "login.html";
         });
     </script>
-
 </body>
 </html>

@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profile Page</title>
+    <title>User Dashboard - FreshCart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Navbar Styling */
         .navbar {
-            background: #28a745 !important;
+            background: #008000 !important;
         }
         .navbar-brand, .navbar input, .navbar button {
             color: white !important;
         }
-
+        
         /* Sidebar Styling */
         .sidebar {
             background: #f8f9fa;
             padding: 20px;
-            height: 100vh;
+            min-height: calc(100vh - 56px);
             border-right: 2px solid #e0e0e0;
         }
         .sidebar h5 {
-            color: #28a745;
+            color: #008000;
             font-weight: bold;
         }
         .sidebar ul {
@@ -39,31 +40,128 @@
             font-weight: 500;
         }
         .sidebar ul li a:hover {
-            color: #28a745;
+            color: #008000;
             font-weight: bold;
         }
-
-        /* Profile & Orders Card */
-        .profile-card, .orders-card {
+        
+        /* Profile & Cards */
+        .profile-card, .orders-card, .address-card {
             background: #fff;
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             margin-top: 20px;
         }
-        .profile-card h4, .orders-card h5 {
-            color: #28a745;
+        .profile-card h4, .orders-card h5, .address-card h5 {
+            color: #008000;
             font-weight: bold;
         }
-
+        
         /* Link Styling */
         a {
-            color: #28a745;
+            color: #008000;
             text-decoration: none;
             font-weight: bold;
         }
         a:hover {
             text-decoration: underline;
+        }
+
+        /* Avatar */
+        .avatar-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #e9f5e9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: #008000;
+            border: 3px solid #008000;
+        }
+        
+        /* Button Styling */
+        .btn-success {
+            background-color: #008000;
+            border-color: #008000;
+        }
+        .btn-success:hover {
+            background-color: #006700;
+            border-color: #006700;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+        }
+
+        /* Back Button */
+        .back-button {
+            margin-bottom: 20px;
+        }
+
+        /* Session Timeout Alert */
+        .session-alert {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        /* Address Card Styling */
+        .address-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .address-item.default {
+            border-color: #008000;
+            background-color: #f0fff0;
+        }
+        .address-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .badge-home {
+            background-color: #e6f7ff;
+            color: #0066cc;
+        }
+        .badge-work {
+            background-color: #fff3e6;
+            color: #ff8c00;
+        }
+        .badge-other {
+            background-color: #f2f2f2;
+            color: #666666;
+        }
+        .badge-default {
+            background-color: #d4edda;
+            color: #008000;
+            margin-left: 5px;
+        }
+        .address-actions {
+            margin-top: 10px;
+        }
+        .no-address {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -72,9 +170,17 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Online Grocery Store</a>
-        <input class="form-control w-50 mx-3" type="search" placeholder="Search for Products..">
-        <button class="btn btn-light">Search</button>
+        <a class="navbar-brand" href="index.html">
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i> FreshCart
+        </a>
+        <div class="d-flex">
+            <a href="index.html" class="btn btn-outline-light me-2">
+                <i class="fa fa-home"></i> Home
+            </a>
+            <button id="logout-btn" class="btn btn-outline-light">
+                <i class="fa fa-sign-out"></i> Logout
+            </button>
+        </div>
     </div>
 </nav>
 
@@ -83,38 +189,269 @@
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3 sidebar">
-            <h5>MY ACCOUNT</h5>
+            <h5><a href="userdashboard.html">MY ACCOUNT</a></h5>
             <ul>
-                <li><a href="edit page.html">Edit Profile</a></li>
-                <li><a href="AddAddress.html">Delivery Addresses</a></li>
-                <li><a href="#">Shopping List</a></li>
-                <li><a href="my order.html">My Orders</a></li>
-                <li><a href="#">Customer Service</a></li>
-                
+                <li><a href="edit page.html"><i class="fa fa-user"></i> Edit Profile</a></li>
+                <li><a href="AddAddress.html"><i class="fa fa-map-marker"></i> Delivery Addresses</a></li>
+                <li><a href="#"><i class="fa fa-list"></i> Shopping List</a></li>
+                <li><a href="my order.html"><i class="fa fa-shopping-bag"></i> My Orders</a></li>
+                <li><a href="#"><i class="fa fa-headphones"></i> Customer Service</a></li>
             </ul>
         </div>
-
+        
         <!-- Main Content -->
         <div class="col-md-9">
-            <!-- Profile Details -->
-            <div class="profile-card">
-                <h4>Profile Details</h4>
-                <hr>
-                <p><strong>Name:</strong> Optimus Prime</p>
-                <p><strong>Email:</strong> primeoptimus7870@gmail.com</p>
-                <p><strong>Phone:</strong> +91 9082937753</p>
+            <!-- Alert for session timeout -->
+            <div class="alert alert-warning session-alert" id="session-alert">
+                You are not logged in. Please <a href="login.html">login</a> to view your profile.
             </div>
 
+            <!-- Profile Details -->
+            <div class="profile-card" id="profile-section">
+                <h4>Profile Details</h4>
+                <hr>
+                <div class="loading" id="loading-indicator">
+                    Loading your profile information...
+                </div>
+                <div id="profile-data" style="display: none;">
+                    <div class="avatar-container">
+                        <div class="avatar" id="user-avatar"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
+                            <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Phone:</strong> <span id="user-phone">Loading...</span></p>
+                            <p><strong>Member Since:</strong> <span id="user-joined">Loading...</span></p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <a href="edit page.html" class="btn btn-success">
+                            <i class="fa fa-pencil"></i> Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delivery Addresses Section -->
+            <div class="address-card">
+                <h5>My Addresses</h5>
+                <hr>
+                <div id="addresses-loading" class="loading">
+                    Loading your addresses...
+                </div>
+                <div id="addresses-container" style="display: none;">
+                    <!-- Addresses will be loaded here -->
+                </div>
+                <div class="mt-3">
+                    <a href="AddAddress.html" class="btn btn-outline-success">
+                        <i class="fa fa-plus"></i> Add New Address
+                    </a>
+                </div>
+            </div>
+            
             <!-- My Orders Section -->
             <div class="orders-card">
                 <h5>My Orders</h5>
                 <hr>
-                <p>You haven't placed any order yet, <a href="#">Start Shopping!</a></p>
+                <div id="orders-section">
+                    <p>You haven't placed any order yet, <a href="index.html#products">Start Shopping!</a></p>
+                </div>
+                <div class="mt-3">
+                    <a href="my order.html" class="btn btn-outline-success">
+                        <i class="fa fa-eye"></i> View All Orders
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const username = localStorage.getItem('username');
+    
+    if (!isLoggedIn || !username) {
+        // User is not logged in, show session alert
+        document.getElementById('session-alert').style.display = 'block';
+        document.getElementById('profile-section').style.display = 'none';
+        return;
+    }
+    
+    // Simulate fetching user data (in a real application, this would be an API call)
+    // For demonstration, we'll use the stored username to simulate a database lookup
+    setTimeout(() => {
+        // Hide loading indicator
+        document.getElementById('loading-indicator').style.display = 'none';
+        document.getElementById('profile-data').style.display = 'block';
+        
+        // Get user phone from localStorage or use default
+        const userPhone = localStorage.getItem('userPhone') || '+91 9082937753';
+        
+        // Populate user data
+        // In a real application, this data would come from your database
+        const userData = {
+            name: username,
+            email: username.toLowerCase().replace(/\s+/g, '') + '@example.com',
+            phone: userPhone,
+            joined: 'March 2025'
+        };
+        
+        // Save phone to localStorage for other pages to use
+        localStorage.setItem('userPhone', userData.phone);
+        
+        document.getElementById('user-name').textContent = userData.name;
+        document.getElementById('user-email').textContent = userData.email;
+        document.getElementById('user-phone').textContent = userData.phone;
+        document.getElementById('user-joined').textContent = userData.joined;
+        
+        // Set avatar with user's initials
+        const initials = userData.name.split(' ')
+            .map(name => name.charAt(0))
+            .join('')
+            .toUpperCase();
+        document.getElementById('user-avatar').textContent = initials;
+    }, 1000);
+    
+    // Load addresses
+    setTimeout(() => {
+        // Hide loading indicator
+        document.getElementById('addresses-loading').style.display = 'none';
+        document.getElementById('addresses-container').style.display = 'block';
+        
+        // Get saved addresses from localStorage
+        const addresses = JSON.parse(localStorage.getItem('userAddresses')) || [];
+        
+        if (addresses.length === 0) {
+            // No addresses found
+            document.getElementById('addresses-container').innerHTML = `
+                <div class="no-address">
+                    <i class="fa fa-map-marker fa-3x text-muted mb-3"></i>
+                    <p>You don't have any saved addresses yet.</p>
+                    <a href="AddAddress.html" class="btn btn-sm btn-success">
+                        <i class="fa fa-plus"></i> Add New Address
+                    </a>
+                </div>
+            `;
+        } else {
+            // Render addresses
+            let addressesHTML = '';
+            
+            addresses.forEach(address => {
+                const isDefault = address.isDefault ? 'default' : '';
+                const addressType = address.type || 'home';
+                
+                addressesHTML += `
+                    <div class="address-item ${isDefault}" data-id="${address.id}">
+                        <span class="address-badge badge-${addressType}">${addressType.charAt(0).toUpperCase() + addressType.slice(1)}</span>
+                        ${address.isDefault ? '<span class="address-badge badge-default">Default</span>' : ''}
+                        <h6>${address.firstName} ${address.lastName}</h6>
+                        <p class="mb-1">${address.houseNo}, ${address.street}</p>
+                        <p class="mb-1">${address.city} - ${address.pincode}</p>
+                        <p class="mb-2">Phone: ${address.phone}</p>
+                        <div class="address-actions">
+                            <button class="btn btn-sm btn-outline-primary me-2 edit-address-btn">
+                                <i class="fa fa-pencil"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-address-btn">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                            ${!address.isDefault ? `
+                                <button class="btn btn-sm btn-outline-success ms-2 set-default-btn">
+                                    Set as Default
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('addresses-container').innerHTML = addressesHTML;
+            
+            // Add event listeners for address actions
+            document.querySelectorAll('.edit-address-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const addressId = this.closest('.address-item').dataset.id;
+                    // In a real application, you would redirect to edit page with ID
+                    alert('Edit functionality would go here');
+                });
+            });
+            
+            document.querySelectorAll('.delete-address-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const addressItem = this.closest('.address-item');
+                    const addressId = parseInt(addressItem.dataset.id);
+                    
+                    if (confirm('Are you sure you want to delete this address?')) {
+                        // Get current addresses
+                        let addresses = JSON.parse(localStorage.getItem('userAddresses')) || [];
+                        
+                        // Remove the address with matching ID
+                        addresses = addresses.filter(addr => addr.id !== addressId);
+                        
+                        // If we removed the default address and have other addresses, set a new default
+                        if (addresses.length > 0 && !addresses.some(addr => addr.isDefault)) {
+                            addresses[0].isDefault = true;
+                        }
+                        
+                        // Save back to localStorage
+                        localStorage.setItem('userAddresses', JSON.stringify(addresses));
+                        
+                        // Remove from DOM
+                        addressItem.remove();
+                        
+                        // If no addresses left, show no address message
+                        if (addresses.length === 0) {
+                            document.getElementById('addresses-container').innerHTML = `
+                                <div class="no-address">
+                                    <i class="fa fa-map-marker fa-3x text-muted mb-3"></i>
+                                    <p>You don't have any saved addresses yet.</p>
+                                    <a href="AddAddress.html" class="btn btn-sm btn-success">
+                                        <i class="fa fa-plus"></i> Add New Address
+                                    </a>
+                                </div>
+                            `;
+                        }
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.set-default-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const addressItem = this.closest('.address-item');
+                    const addressId = parseInt(addressItem.dataset.id);
+                    
+                    // Get current addresses
+                    let addresses = JSON.parse(localStorage.getItem('userAddresses')) || [];
+                    
+                    // Update default status
+                    addresses = addresses.map(addr => {
+                        addr.isDefault = (addr.id === addressId);
+                        return addr;
+                    });
+                    
+                    // Save back to localStorage
+                    localStorage.setItem('userAddresses', JSON.stringify(addresses));
+                    
+                    // Refresh the page to show updated defaults
+                    window.location.reload();
+                });
+            });
+        }
+    }, 1200);
+    
+    // Handle logout
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('username');
+        window.location.href = 'login.html';
+    });
+});
+</script>
 </body>
 </html>

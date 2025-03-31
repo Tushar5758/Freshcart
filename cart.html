@@ -1,350 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<html>
-    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-
     <link rel="icon" type="image/PNG" href="image/favicon.PNG">
-    <title>Grocessory Store</title>
-  
-  <!-- Code for font awesome cdn -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- Code for font awesome cdn -->
-  
-  <!-- Code for linking css file -->
-  <!-- Code for linking css file -->
-  
-  
-  
-  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-  
-   <!-- Bootstrap CSS -->
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Checkout - FreshCart</title>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
     <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
 
-   /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
+        .referral-code-container {
+            max-width: 300px;
+            margin-left: auto;
+        }
 
-h2, h3 {
-    text-align: center;
-    color: #333;
-}
+        #referral-message {
+            text-align: right;
+            min-height: 20px;
+        }
 
-/* Header Styles */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.5rem 9%;
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+        #discount-amount {
+            color: #28a745;
+        }
 
-.header .logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    text-decoration: none;
-}
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 9%;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-.header .navbar a {
-    font-size: 1.2rem;
-    margin: 0 1rem;
-    color: #333;
-    text-decoration: none;
-    transition: color 0.3s;
-}
+        .header .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
 
-.header .navbar a:hover {
-    color: #28a745;
-}
+        .header .navbar a {
+            font-size: 1.2rem;
+            margin: 0 1rem;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
 
-.header .icons div {
-    display: inline-block;
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-    text-align: center;
-    background: #eee;
-    color: #333;
-    font-size: 1.5rem;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: background 0.3s, color 0.3s;
-}
+        .header .navbar a:hover {
+            color: #28a745;
+        }
 
-.header .icons div:hover {
-    background: #28a745;
-    color: #fff;
-}
+        .header .icons div {
+            display: inline-block;
+            height: 40px;
+            width: 40px;
+            line-height: 40px;
+            text-align: center;
+            background: #eee;
+            color: #333;
+            font-size: 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background 0.3s, color 0.3s;
+        }
 
-/* Cart Section */
-.cart {
-    max-width: 800px;
-    margin-top: 120px;
-    margin-left: 350px;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
+        .header .icons div:hover {
+            background: #28a745;
+            color: #fff;
+        }
 
-#cart_components {
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-    margin-bottom: 15px;
-    padding: 10px;
-    border-bottom: 2px solid #ddd;
-}
+        /* Main content padding */
+        .main-container {
+            margin-top: 120px;
+        }
 
-.cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
+        /* Cart styles */
+        .cart-item {
+            border-bottom: 1px solid #ddd;
+        }
 
-.cart-item img {
-    width: 70px;
-    height: auto;
-    border-radius: 5px;
-}
+        .quantity-controls button {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #28a745;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.quantity-controls {
-    display: flex;
-    align-items: center;
-}
+        .quantity-controls button:hover {
+            background: #218838;
+        }
 
-.quantity-controls button {
-    width: 30px;
-    height: 30px;
-    
-    border: none;
-    background: #28a745;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: 0.3s;
-    margin: 20px;
-}
+        /* Checkout page styles */
+        #checkout-page {
+            display: none;
+        }
 
-.quantity-controls button:hover {
-    background: #218838;
-}
+        .checkout-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
 
-#total-price {
-    font-weight: bold;
-    font-size: 18px;
-    text-align: right;
-    margin-top: 15px;
-}
+        /* Address selection styles */
+        .address-option {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-.clear-btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: rgb(38, 137, 23);
-    color: black;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    border-radius: 5px;
-    transition: 0.3s;
-}
+        .address-option:hover,
+        .address-option.selected {
+            border-color: #28a745;
+            background-color: #f0fff0;
+        }
 
-.clear-btn:hover {
-    background: rgb(108, 206, 108);
-}
+        .address-option.selected {
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+        }
 
-/* Bill Details */
-/* Bill details */
-.bill_details {
-  top: 0;
-  position: relative;
-  margin-top: 0;
-    flex: 0.4;
-    max-width: 35%;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    text-align: center;
-    margin-left: 900px;
-    align-self: flex-start;
-}
+        .address-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
 
-.bill_details h3 {
-    font-size: 22px;
-    margin-bottom: 15px;
-}
+        .badge-home {
+            background-color: #e6f7ff;
+            color: #0066cc;
+        }
 
-.bill_details p {
-    font-size: 16px;
-    margin: 5px 0;
-}
-/* Responsive Design */
-@media (max-width: 768px) {
-    .header {
-        padding: 1rem 5%;
-    }
+        .badge-work {
+            background-color: #fff3e6;
+            color: #ff8c00;
+        }
 
-    .header .navbar a {
-        font-size: 1rem;
-        margin: 0 0.5rem;
-    }
+        .badge-other {
+            background-color: #f2f2f2;
+            color: #666666;
+        }
 
-    .cart {
-        width: 90%;
-        margin: 100px auto;
-    }
-
-    #cart_components {
-        flex-wrap: wrap;
-        text-align: center;
-    }
-
-    .cart-item {
-        flex-wrap: wrap;
-        text-align: center;
-    }
-
-    .quantity-controls {
-        margin-top: 10px;
-    }
-}
-
-       
+        .badge-default {
+            background-color: #d4edda;
+            color: #28a745;
+        }
     </style>
-    <body>
-        <header class="header">
-            <a href="#" class="logo">  <i class="fa fa-shopping-basket" aria-hidden="true"></i> FreshCart </a>
-          
-          <nav class="navbar">
-            <a href="#home">home</a>
-            <a href="#features">features</a>
-            <a href="#products">products</a>
-            <a href="#categories">categories</a>
-            <a href="#reviews">reviews</a>
-          
-          </nav>
-          
-          <div class="icons">
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <a href="index.html" class="logo"> <i class="fa fa-shopping-basket" aria-hidden="true"></i> FreshCart </a>
+
+        <nav class="navbar">
+            <a href="index.html#home">home</a>
+            <a href="index.html#features">features</a>
+            <a href="index.html#products">products</a>
+            <a href="index.html#categories">categories</a>
+            <a href="index.html#reviews">reviews</a>
+        </nav>
+
+        <div class="icons">
             <div class="fa fa-bars" id="menu-btn"></div>
             <div class="fa fa-search" id="search-btn"></div>
             <div class="fa fa-shopping-cart" id="cart-btn"></div>
-            <div class="fa fa-user" id="logi-btn"></div>
-          </div>
-          
-          
-          <form class="search-form">
-            <input type="search" id="search-box" placeholder="Search Here">
-            <label for="search-box" class="fa fa-search"></label>
-          </form>
-          
-          
-          
-          
-           </header>
-          <!-- header section -->
-        <h2>Cart</h2>
-        <div class="cart">
-            <div id="cart_components">
-                <span>Product</span>
-                <span>Product Name</span>
-                <span>Quantity</span>
-                <span>Price</span>
-                <span>Subtotal</span>
-            </div>
-            <ul id="cart-items"></ul>
-            <div id="total-price"></div>  <!-- Total Price Section -->
-            <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+            <div class="fa fa-user" id="login-btn"></div>
         </div>
-        <!--small billing displaying-->
-        
+    </header>
 
-        <script>
-            function loadCart() {
-                let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                let cartItems = document.getElementById("cart-items");
-                let totalPriceElement = document.getElementById("total-price");
-                let total = 0;
-
-                cartItems.innerHTML = "";
-
-                if (cart.length === 0) {
-                    cartItems.innerHTML = "<li>Your cart is empty</li>";
-                    totalPriceElement.innerText = "";
-                } else {
-                    cart.forEach((item, index) => {
-                        // Ensure price and quantity are numbers
-                        let price = parseFloat(item.price.replace(/[^0-9.]/g, "")) || 0;
-                        let quantity = parseInt(item.quantity) || 0;
-                        let subtotal = price * quantity;
-                        // Calculate subtotal
-                        total += subtotal; // Add to total price
-
-                        let li = document.createElement("li");
-                        li.className = "cart-item";
-                        
-                        li.innerHTML = `
-                            <img src="${item.image}" alt="${item.name}">
-                            <span>${item.name}</span>
-                            <div class="quantity-controls">
-                                <button onclick="Decrease_Quantity(${index})">-</button>
-                                <span id="quantity-${index}">${quantity}</span>
-                                <button onclick="Increase_Quantity(${index})">+</button>
+    <div class="container main-container">
+        <!-- Cart Page -->
+        <div id="cart-page">
+            <h2 class="text-center mb-4">Your Cart</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="row fw-bold border-bottom pb-3 mb-3 text-center">
+                                <div class="col-md-2">Product</div>
+                                <div class="col-md-3">Product Name</div>
+                                <div class="col-md-2">Quantity</div>
+                                <div class="col-md-2">Price</div>
+                                <div class="col-md-2">Subtotal</div>
+                                <div class="col-md-1">Action</div>
                             </div>
-                            <span class="price">₹${price.toFixed(2)}</span>
-                            <span class="subtotal" id="subtotal-${index}">₹${subtotal.toFixed(2)}</span>
-                        `;
-                        cartItems.appendChild(li);
-                    });
+                            <div id="cart-items" class="mb-3"></div>
+                            <div id="total-price" class="text-end fs-5 fw-bold p-2 bg-light rounded"></div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <button class="btn btn-danger" onclick="clearCart()">Clear Cart</button>
+                                <button class="btn btn-success" onclick="showCheckoutPage()">Checkout</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    // Display total cart value
-                    totalPriceElement.innerText = `Total: ₹${total.toFixed(2)}`;
+        <!-- Checkout Page -->
+        <div id="checkout-page">
+            <h2 class="text-center mb-4">Checkout</h2>
+            <div class="row">
+                <!-- User Information -->
+                <div class="col-lg-5 mb-4">
+                    <div class="checkout-section p-4">
+                        <h3 class="mb-4">Customer Details</h3>
+                        <div class="mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fa fa-user me-2"></i>User Information</h5>
+                                    <p class="card-text"><strong>Name:</strong> <span id="user-name">Loading...</span>
+                                    </p>
+                                    <p class="card-text"><strong>Email:</strong> <span id="user-email">Loading...</span>
+                                    </p>
+                                    <p class="card-text"><strong>Phone:</strong> <span id="user-phone">Loading...</span>
+                                    </p>
+                                    <a href="edit page.html" class="btn btn-sm btn-outline-success mt-2">
+                                        <i class="fa fa-pencil me-1"></i>Edit Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fa fa-map-marker me-2"></i>Delivery Address</h5>
+
+                                    <div class="mb-3">
+                                        <label for="address-select" class="form-label">Select Address:</label>
+                                        <select class="form-select" id="address-select"
+                                            onchange="handleAddressSelection()">
+                                            <option value="loading">Loading addresses...</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Selected address will be displayed here -->
+                                    <div id="selected-address-display" class="mb-3"></div>
+
+                                    <!-- New address form - initially hidden -->
+                                    <div id="new-address-form" style="display: none;">
+                                        <h6 class="mt-3 mb-2">Enter New Address</h6>
+                                        <div class="row g-2">
+                                            <div class="col-md-6 mb-2">
+                                                <input type="text" class="form-control" placeholder="First Name"
+                                                    id="new-firstname">
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <input type="text" class="form-control" placeholder="Last Name"
+                                                    id="new-lastname">
+                                            </div>
+                                            <div class="col-12 mb-2">
+                                                <input type="text" class="form-control" placeholder="House/Flat No."
+                                                    id="new-houseno">
+                                            </div>
+                                            <div class="col-12 mb-2">
+                                                <input type="text" class="form-control" placeholder="Street/Locality"
+                                                    id="new-street">
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <input type="text" class="form-control" placeholder="City"
+                                                    id="new-city">
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <input type="text" class="form-control" placeholder="PIN Code"
+                                                    id="new-pincode">
+                                            </div>
+                                            <div class="col-12 mb-2">
+                                                <input type="tel" class="form-control" placeholder="Phone Number"
+                                                    id="new-phone">
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <select class="form-select" id="new-type">
+                                                    <option value="home">Home</option>
+                                                    <option value="work">Work</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="new-default">
+                                            <label class="form-check-label" for="new-default">
+                                                Set as default address
+                                            </label>
+                                        </div>
+                                        <button class="btn btn-success btn-sm" onclick="saveNewAddress()">Save
+                                            Address</button>
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <a href="AddAddress.html" class="text-success">
+                                            <i class="fa fa-plus-circle me-1"></i>Manage Addresses
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" checked id="same-billing">
+                            <label class="form-check-label" for="same-billing">
+                                Billing address same as shipping
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-7">
+                    <div class="checkout-section p-4">
+                        <h3 class="mb-4">Order Summary</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="checkout-items">
+                                    <!-- Items will be populated here -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-end fw-bold">Subtotal:</td>
+                                        <td id="checkout-subtotal" class="fw-bold">₹0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-end">
+                                            <div class="input-group referral-code-container">
+                                                <input type="text" class="form-control" id="referral-code"
+                                                    placeholder="Enter referral code">
+                                                <button class="btn btn-outline-success" type="button"
+                                                    id="apply-referral">Apply</button>
+                                            </div>
+                                            <div id="referral-message" class="mt-1 small"></div>
+                                        </td>
+                                        <td id="discount-amount">₹0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-end fw-bold">Total:</td>
+                                        <td id="checkout-total" class="fw-bold fs-5">₹0.00</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+
+
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-secondary" onclick="backToCart()">Back to Cart</button>
+                            <button class="btn btn-success" onclick="proceedToPayment()">
+                                <i class="fa fa-credit-card me-2"></i>Proceed to Payment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        // Load cart items
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cartItems = document.getElementById("cart-items");
+            let totalPriceElement = document.getElementById("total-price");
+            let total = 0;
+
+            cartItems.innerHTML = "";
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = "<div class='text-center py-4'>Your cart is empty</div>";
+                totalPriceElement.innerText = "";
+            } else {
+                cart.forEach((item, index) => {
+                    // Ensure price and quantity are numbers
+                    let price = parseFloat(item.price) || 0;
+                    let quantity = parseInt(item.quantity) || 0;
+                    let subtotal = price * quantity;
+
+                    // Add to total price
+                    total += subtotal;
+
+                    let itemDiv = document.createElement("div");
+                    itemDiv.className = "row align-items-center cart-item py-3 text-center";
+
+                    itemDiv.innerHTML = `
+                        <div class="col-md-2">
+                            <img src="${item.image}" alt="${item.name}" class="img-fluid rounded" style="max-height: 60px;">
+                        </div>
+                        <div class="col-md-3">${item.name}</div>
+                        <div class="col-md-2">
+                            <div class="quantity-controls d-flex align-items-center justify-content-center">
+                                <button class="btn btn-sm btn-success me-2" onclick="decreaseQuantity(${index})">-</button>
+                                <span id="quantity-${index}">${quantity}</span>
+                                <button class="btn btn-sm btn-success ms-2" onclick="increaseQuantity(${index})">+</button>
+                            </div>
+                        </div>
+                        <div class="col-md-2">₹${price.toFixed(2)}</div>
+                        <div class="col-md-2">₹${subtotal.toFixed(2)}</div>
+                        <div class="col-md-1">
+                            <button class="btn btn-sm btn-danger" onclick="removeItem(${index})" title="Remove Item">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    cartItems.appendChild(itemDiv);
+                });
+
+                // Display total cart value
+                totalPriceElement.innerText = `Total: ₹${total.toFixed(2)}`;
+            }
+        }
+
+        function clearCart() {
+            localStorage.removeItem("cart");
+            loadCart();
+        }
+
+        function decreaseQuantity(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart[index].quantity > 1) {
+                cart[index].quantity = Number(cart[index].quantity) - 1;
+                // Update subtotal
+                let price = parseFloat(cart[index].price);
+                cart[index].subtotal = (price * cart[index].quantity).toFixed(2);
+            } else {
+                cart.splice(index, 1); // Remove item if quantity reaches 0
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
+
+        function increaseQuantity(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart[index].quantity = Number(cart[index].quantity) + 1;
+            // Update subtotal
+            let price = parseFloat(cart[index].price);
+            cart[index].subtotal = (price * cart[index].quantity).toFixed(2);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
+
+        // Function to remove an item from the cart
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
+
+        // Show checkout page
+        function showCheckoutPage() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+
+            // Hide cart page, show checkout page
+            document.getElementById("cart-page").style.display = "none";
+            document.getElementById("checkout-page").style.display = "block";
+
+            // Populate user data from localStorage
+            loadUserData();
+
+            // Load saved addresses
+            loadAddresses();
+
+            // Populate checkout items
+            loadCheckoutItems();
+        }
+
+        // Load user data from localStorage
+        function loadUserData() {
+            const username = localStorage.getItem('username') || 'Guest User';
+            const userEmail = localStorage.getItem('userEmail') || (username.toLowerCase().replace(/\s+/g, '') + '@example.com');
+            const userPhone = localStorage.getItem('userPhone') || '+91 9082937753';
+
+            document.getElementById("user-name").textContent = username;
+            document.getElementById("user-email").textContent = userEmail;
+            document.getElementById("user-phone").textContent = userPhone;
+        }
+
+        // Load saved addresses
+        function loadAddresses() {
+            const addresses = JSON.parse(localStorage.getItem('userAddresses')) || [];
+            const addressSelect = document.getElementById('address-select');
+
+            // Clear previous options
+            addressSelect.innerHTML = '';
+
+            // Add option to enter new address
+            addressSelect.innerHTML = '<option value="new">+ Add New Address</option>';
+
+            if (addresses.length === 0) {
+                // No saved addresses
+                document.getElementById('new-address-form').style.display = 'block';
+                document.getElementById('selected-address-display').innerHTML = '<div class="alert alert-info">No saved addresses found. Please enter a new address.</div>';
+            } else {
+                // Add all saved addresses to dropdown
+                addresses.forEach(address => {
+                    const option = document.createElement('option');
+                    option.value = address.id;
+                    const isDefault = address.isDefault ? '(Default)' : '';
+                    option.textContent = `${address.firstName} ${address.lastName} - ${address.type.charAt(0).toUpperCase() + address.type.slice(1)} ${isDefault}`;
+
+                    // Set default address as selected
+                    if (address.isDefault) {
+                        option.selected = true;
+                    }
+
+                    addressSelect.appendChild(option);
+                });
+
+                // Display the selected address
+                handleAddressSelection();
+            }
+        }
+
+        // Handle address selection change
+        function handleAddressSelection() {
+            const addressSelect = document.getElementById('address-select');
+            const selectedValue = addressSelect.value;
+            const addressDisplay = document.getElementById('selected-address-display');
+            const newAddressForm = document.getElementById('new-address-form');
+
+            if (selectedValue === 'new') {
+                // Show new address form
+                newAddressForm.style.display = 'block';
+                addressDisplay.innerHTML = '';
+            } else if (selectedValue === 'loading') {
+                // Still loading addresses
+                addressDisplay.innerHTML = '<div class="spinner-border text-success" role="status"><span class="visually-hidden">Loading...</span></div>';
+                newAddressForm.style.display = 'none';
+            } else {
+                // Display selected address details
+                newAddressForm.style.display = 'none';
+
+                const addresses = JSON.parse(localStorage.getItem('userAddresses')) || [];
+                const selectedAddress = addresses.find(addr => addr.id == selectedValue);
+
+                if (selectedAddress) {
+                    addressDisplay.innerHTML = `
+                        <div class="address-option selected">
+                            <span class="address-badge badge-${selectedAddress.type}">${selectedAddress.type.charAt(0).toUpperCase() + selectedAddress.type.slice(1)}</span>
+                            ${selectedAddress.isDefault ? '<span class="address-badge badge-default">Default</span>' : ''}
+                            <h6>${selectedAddress.firstName} ${selectedAddress.lastName}</h6>
+                            <p class="mb-1">${selectedAddress.houseNo}, ${selectedAddress.street}</p>
+                            <p class="mb-1">${selectedAddress.city} - ${selectedAddress.pincode}</p>
+                            <p class="mb-1">Phone: ${selectedAddress.phone}</p>
+                        </div>
+                    `;
                 }
             }
+        }
 
-            function clearCart() {
-                localStorage.removeItem("cart");
-                loadCart();
+        // Save new address
+        function saveNewAddress() {
+            // Get form values
+            const firstName = document.getElementById('new-firstname').value.trim();
+            const lastName = document.getElementById('new-lastname').value.trim();
+            const houseNo = document.getElementById('new-houseno').value.trim();
+            const street = document.getElementById('new-street').value.trim();
+            const city = document.getElementById('new-city').value.trim();
+            const pincode = document.getElementById('new-pincode').value.trim();
+            const phone = document.getElementById('new-phone').value.trim();
+            const type = document.getElementById('new-type').value;
+            const isDefault = document.getElementById('new-default').checked;
+
+            // Validate form
+            if (!firstName || !lastName || !houseNo || !street || !city || !pincode || !phone) {
+                alert('Please fill all required fields');
+                return;
             }
 
-            function Decrease_Quantity(index) {
-                let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                if (cart[index].quantity > 1) {
-                    cart[index].quantity = Number(cart[index].quantity) - 1;
+            // Get existing addresses
+            let addresses = JSON.parse(localStorage.getItem('userAddresses')) || [];
+
+            // Create new address object
+            const newAddress = {
+                id: Date.now(), // Use timestamp as ID
+                firstName,
+                lastName,
+                houseNo,
+                street,
+                city,
+                pincode,
+                phone,
+                type,
+                isDefault
+            };
+
+            // If setting as default, update other addresses
+            if (isDefault) {
+                addresses = addresses.map(addr => {
+                    addr.isDefault = false;
+                    return addr;
+                });
+            }
+
+            // Add new address
+            addresses.push(newAddress);
+
+            // If this is the first address, set as default
+            if (addresses.length === 1) {
+                addresses[0].isDefault = true;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('userAddresses', JSON.stringify(addresses));
+
+            // Reload addresses
+            loadAddresses();
+
+            // Clear form
+            document.getElementById('new-firstname').value = '';
+            document.getElementById('new-lastname').value = '';
+            document.getElementById('new-houseno').value = '';
+            document.getElementById('new-street').value = '';
+            document.getElementById('new-city').value = '';
+            document.getElementById('new-pincode').value = '';
+            document.getElementById('new-phone').value = '';
+            document.getElementById('new-default').checked = false;
+
+            alert('Address saved successfully!');
+        }
+
+        // Load items in checkout page
+        // Apply referral code
+        document.getElementById("apply-referral").addEventListener("click", applyReferralCode);
+
+        // Function to handle referral code application
+        function applyReferralCode() {
+            const referralCode = document.getElementById("referral-code").value.trim();
+            const messageElement = document.getElementById("referral-message");
+            const discountElement = document.getElementById("discount-amount");
+            const totalElement = document.getElementById("checkout-total");
+
+            // Get current subtotal
+            const subtotalText = document.getElementById("checkout-subtotal").textContent;
+            const subtotal = parseFloat(subtotalText.replace('₹', '')) || 0;
+
+            // Reset previous messages and discount
+            messageElement.innerHTML = "";
+            messageElement.className = "mt-1 small";
+            discountElement.textContent = "₹0.00";
+
+            // Check referral code
+            if (referralCode === "OFF100") {
+                if (subtotal >= 100) {
+                    // Valid code and subtotal meets minimum requirement
+                    const discount = 100;
+                    const newTotal = subtotal - discount;
+
+                    // Update UI
+                    discountElement.textContent = `-₹${discount.toFixed(2)}`;
+                    totalElement.textContent = `₹${newTotal.toFixed(2)}`;
+
+                    messageElement.textContent = "Discount applied successfully!";
+                    messageElement.className = "mt-1 small text-success";
                 } else {
-                    cart.splice(index, 1); // Remove item if quantity reaches 0
+                    // Subtotal too low
+                    totalElement.textContent = `₹${subtotal.toFixed(2)}`;
+                    messageElement.textContent = "Minimum order value of ₹100 required for this code";
+                    messageElement.className = "mt-1 small text-danger";
                 }
-                localStorage.setItem("cart", JSON.stringify(cart));
-                loadCart();
+            } else if (referralCode === "") {
+                // Empty code
+                totalElement.textContent = `₹${subtotal.toFixed(2)}`;
+            } else {
+                // Invalid code
+                totalElement.textContent = `₹${subtotal.toFixed(2)}`;
+                messageElement.textContent = "Invalid referral code";
+                messageElement.className = "mt-1 small text-danger";
+            }
+        }
+
+        // Modify the loadCheckoutItems function to reset discount when cart changes
+        function loadCheckoutItems() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let checkoutItems = document.getElementById("checkout-items");
+            let subtotal = 0;
+
+            checkoutItems.innerHTML = "";
+
+            cart.forEach((item) => {
+                let price = parseFloat(item.price) || 0;
+                let quantity = parseInt(item.quantity) || 0;
+                let itemSubtotal = price * quantity;
+                subtotal += itemSubtotal;
+
+                let row = document.createElement("tr");
+                row.innerHTML = `
+            <td>
+                <div class="d-flex align-items-center">
+                    <img src="${item.image}" alt="${item.name}" class="img-fluid rounded me-2" style="max-height: 40px;">
+                    <span>${item.name}</span>
+                </div>
+            </td>
+            <td>₹${price.toFixed(2)}</td>
+            <td>${quantity}</td>
+            <td>₹${itemSubtotal.toFixed(2)}</td>
+        `;
+
+                checkoutItems.appendChild(row);
+            });
+
+            // Update totals
+            document.getElementById("checkout-subtotal").textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById("checkout-total").textContent = `₹${subtotal.toFixed(2)}`;
+
+            // Reset discount display
+            if (document.getElementById("discount-amount")) {
+                document.getElementById("discount-amount").textContent = "₹0.00";
+            }
+            if (document.getElementById("referral-message")) {
+                document.getElementById("referral-message").innerHTML = "";
+            }
+            if (document.getElementById("referral-code")) {
+                document.getElementById("referral-code").value = "";
+            }
+        }
+
+
+        // Go back to cart page
+        function backToCart() {
+            document.getElementById("checkout-page").style.display = "none";
+            document.getElementById("cart-page").style.display = "block";
+        }
+
+        // Proceed to payment
+        function proceedToPayment() {
+            // Validate address is selected
+            const addressSelect = document.getElementById('address-select');
+            const newAddressForm = document.getElementById('new-address-form');
+
+            if (addressSelect.value === 'new' && newAddressForm.style.display === 'block') {
+                // Check if new address form is filled
+                const firstName = document.getElementById('new-firstname').value.trim();
+                const lastName = document.getElementById('new-lastname').value.trim();
+                const houseNo = document.getElementById('new-houseno').value.trim();
+                const street = document.getElementById('new-street').value.trim();
+
+                if (!firstName || !lastName || !houseNo || !street) {
+                    alert('Please complete your address information');
+                    return;
+                }
+
+                // Save the address first
+                saveNewAddress();
             }
 
-            function Increase_Quantity(index) {
-                let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                cart[index].quantity = Number(cart[index].quantity) + 1;
-                localStorage.setItem("cart", JSON.stringify(cart));
-                loadCart();
+            // Get the total amount
+            const totalText = document.getElementById("checkout-total").textContent;
+            const totalAmount = parseFloat(totalText.replace('₹', '')) || 0;
+
+            // Convert to paise (Razorpay requires amount in smallest currency unit)
+            const amountInPaise = Math.round(totalAmount * 100);
+
+            // Get user details
+            const userName = document.getElementById("user-name").textContent;
+            const userEmail = document.getElementById("user-email").textContent;
+            const userPhone = document.getElementById("user-phone").textContent.replace(/\D/g, ''); // Remove non-digits
+
+            // Create options for Razorpay
+            const options = {
+                key: "rzp_test_gcMSXmcaavLE41", // Enter the Key ID generated from Razorpay Dashboard
+                amount: amountInPaise, // Amount is in currency subunits. 100 = 1 INR
+                currency: "INR",
+                name: "FreshCart",
+                description: "Purchase from FreshCart",
+                image: "/api/placeholder/60/60", // Replace with your logo
+                handler: function (response) {
+                    // Handle successful payment
+                    handlePaymentSuccess(response);
+                },
+                prefill: {
+                    name: userName,
+                    email: userEmail,
+                    contact: userPhone
+                },
+                notes: {
+                    address: "FreshCart Headquarters"
+                },
+                theme: {
+                    color: "#28a745"
+                }
+            };
+
+            // Create a new Razorpay instance
+            const rzp = new Razorpay(options);
+
+            // Open Razorpay checkout form
+            rzp.open();
+
+            // Prevent default form submission
+            return false;
+        }
+
+        // Function to handle successful payment
+        function handlePaymentSuccess(response) {
+            // You can send the payment ID to your server to verify the payment
+            // For now, let's just show a success message and clear the cart
+
+            alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+
+            // Clear cart and redirect to home page
+            localStorage.removeItem("cart");
+            window.location.href = "index.html"; // Redirect to home page or order confirmation
+        }
+
+        // Add a function to handle payment failure if needed
+        function handlePaymentFailure() {
+            alert("Payment failed. Please try again.");
+        }
+
+        // Function to handle successful payment
+        function handlePaymentSuccess(response) {
+            // Get the selected address ID to store it for the bill page
+            const addressSelect = document.getElementById('address-select');
+            localStorage.setItem('selectedAddressId', addressSelect.value);
+
+            // Store the cart items as order items
+            localStorage.setItem('orderItems', localStorage.getItem('cart'));
+
+            // Store discount amount if any
+            const discountText = document.getElementById("discount-amount").textContent;
+            const discount = parseFloat(discountText.replace('₹', '').replace('-', '')) || 0;
+            localStorage.setItem('orderDiscount', discount.toString());
+
+            // Redirect to the bill page with payment ID
+            window.location.href = `bill.html?payment_id=${response.razorpay_payment_id}`;
+        }
+
+        // Add mock data for testing
+        function addMockData() {
+            // Add mock cart items if none exist
+            if (!localStorage.getItem("cart")) {
+                const mockCart = [
+                    {
+                        name: "Fresh Apples",
+                        price: "99.50",
+                        quantity: 2,
+                        image: "/api/placeholder/60/60",
+                        subtotal: "199.00"
+                    },
+                    {
+                        name: "Organic Bananas",
+                        price: "49.99",
+                        quantity: 3,
+                        image: "/api/placeholder/60/60",
+                        subtotal: "149.97"
+                    }
+                ];
+                localStorage.setItem("cart", JSON.stringify(mockCart));
             }
 
-            window.onload = loadCart;
-            console.log(localStorage.getItem("cart"));
+            // Add mock user data if none exists
+            if (!localStorage.getItem("username")) {
+                localStorage.setItem("username", "John Doe");
+                localStorage.setItem("userEmail", "john.doe@example.com");
+                localStorage.setItem("userPhone", "+91 9082937753");
+            }
 
-        </script>
-    </body>
+            // Add mock addresses if none exist
+            if (!localStorage.getItem("userAddresses")) {
+                const mockAddresses = [
+                    {
+                        id: 1,
+                        firstName: "John",
+                        lastName: "Doe",
+                        houseNo: "123",
+                        street: "Main Street",
+                        city: "Mumbai",
+                        pincode: "400001",
+                        phone: "+91 9082937753",
+                        type: "home",
+                        isDefault: true
+                    },
+                    {
+                        id: 2,
+                        firstName: "John",
+                        lastName: "Doe",
+                        houseNo: "456",
+                        street: "Business Park",
+                        city: "Mumbai",
+                        pincode: "400002",
+                        phone: "+91 9082937753",
+                        type: "work",
+                        isDefault: false
+                    }
+                ];
+                localStorage.setItem("userAddresses", JSON.stringify(mockAddresses));
+            }
+        }
+
+        // Initialize page
+        document.addEventListener("DOMContentLoaded", function () {
+            // Add mock data for testing purposes
+            addMockData();
+
+            // Load cart items
+            loadCart();
+        });
+    </script>
+</body>
+
 </html>

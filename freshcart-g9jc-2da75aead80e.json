@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "freshcart-g9jc",
+  "private_key_id": "2da75aead80e62d24429d29b4d6a1f3a49256ebb",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC2ByBaqnsBeBwr\nIS/M5hVPBRUH6SamatdIcpfie9BQZjpO/kWzz2mzkHncb6CHkZzsNsiRfC1jmbP/\nG0v0S0oT727snT/BHfk2nsq8UM7mS5Vq0j6QvlmywG6+k0e6UzZ2XrOrpcbYsDit\n/6PzSf33U23dyEwQpb/V6KraETv5S425icGa4UT3gQ0GJ1tiPbqFDqYimqeTBd0O\n+e8hDQNAyM5YfXot2Nn2SN33EqEgHSK5/q0qunb3siLPpGPgO6g/Np1nDDu/Nkdh\nwhW2hfnFIyEC1QpOPOeJjqVuNVJvUk/CCn9vFeYwC4gi0wxaHXxF3c0DkCwG7Mh/\n/J1LiNTHAgMBAAECggEAHkgQN1UOEn//O6ORNqZ+G/+t8Ht2bQ/wEYLSxqAvVviy\nsYp2YQPbwz4BL804KOVt9BPnCODeEigzO/i4CYNu5uMZkm5UeVV5rH79HhfZW5Fu\nYW9pbh3kgSqnIbgRoisOr+FwRVlWO50RSMzy4tnH0JnF+LPGB6zzPWwv5Agi8IU7\n0zcXGfFieYUyG9Zmt3GeF6h3mUWgV6+IFTI0Z0QT1vjwAy//uM9hGncOv6KFuhNt\nDpchNZpKBj4ehArkyEE39lJoRM0ZCyIlR2s3Y9kxVx2vxRXsAFtavM3ksKQHh1qj\ngiFq1QEAuHKPo+M2QQBQ9vx80EZuFGuUOsH1Krm76QKBgQDYaRIcudvMdFdH3pSP\nqg09WFSXyJ76ieB4Iq8mib6eG685z7Cd2RD4skYF+zPAHn+6GB36mnBCD4fBJZ7c\nZMJ8f5I1KE1bwOEXwolxrO1tFpKG7Xf2ZJ+oS3JZAK0566ZlwOb1GQRDJhMCnL3v\nimDuz/kEGTf6n5NglAEB+dwNPwKBgQDXU9nAWc6lF84BAanRRr7dQHwJf0DxFnBu\nx5W1aGpYuO3J7UlJr500nVcZhrHej966tZLi/Mh+1erlGy2Oc+CTUlqIyN/2kJ0x\nLpJsnwOtLxMufN/aM6ocwdvI+DFRe0vzeP+jl3qLRwmyHXeNfbddNkYAENXss8aT\nn55jtkrueQKBgAyHOKc1E0Zozcy5U/xlKdMNVAhdcuaqKLaLu3wNqV1Z2PEN1vms\nYVEkcO1Tt5E9ssNBNisV2b3ZTFCgLuwvYRr3/6zYInJXXjCT8IUGL9CK5/yrrrAy\n7xM9GueQJHcf70ggvL4frqF8iMkz7cL6TdZFb/MOyrDVoCCNMOm+X0DdAoGBANWH\nw2IqLPAuwQzid2KfA1spPVe1p9Lsa6aPqXhyCTPef4BFHO5DhmPMu7kGh5CrnzYM\nJZOPFcwhmoSEBRNE+ild+4W1ndNG6XsCMhYhQmYVTrJFBz+9CC7oV2neJholaNYS\n4X97EfzX/1dwPURErPd0gMpD58CJLpzqJwm+lmQRAoGAeksnjnsdylxeSSGuv+Fc\npPDWjYKFylOdGb4ivHWzEtYbKrNvxljkQEVMFms6ywuhGVc+iHfUhlHwM46rWi/r\nx0oe4+qgNN/RD5bFlv+oqPU4jkoXwgrDQj1mqdoA/NJLk7IbMy106wpj+oDXter3\nrpGDAU+suI739nMllq8riic=\n-----END PRIVATE KEY-----\n",
+  "client_email": "freshcart-bot-service@freshcart-g9jc.iam.gserviceaccount.com",
+  "client_id": "101342505179975057023",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/freshcart-bot-service%40freshcart-g9jc.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

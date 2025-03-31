@@ -22,9 +22,11 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from 'public' directory
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// SQLite Database Setup
-const db = new sqlite3.Database("database.db");
 
+ // Replace with your Dialogflow Project ID
+
+// SQLite Database Setup
+const db = new sqlite3.Database('database.db');
 // Updated inventory table to include image
 db.run(`CREATE TABLE IF NOT EXISTS inventory (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,61 +38,22 @@ db.run(`CREATE TABLE IF NOT EXISTS inventory (
     image BLOB
 )`);
 
-function initializeDatabase() {
-    db.run(`CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        fullName TEXT,
-        username TEXT UNIQUE,
-        email TEXT UNIQUE,
-        password TEXT
-    )`, (err) => {
-        if (err) {
-            console.error('Error creating users table:', err.message);
-        } else {
-            console.log('Users table created or already exists.');
-        }
-    });
-}
+db.run(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    address TEXT NOT NULL
+)`);
 
 // Validation functions
-function validateRegistrationInput(fullName, username, email, password) {
-    // Validate full name
-    if (!fullName || fullName.length < 2) {
-        return 'Full name must be at least 2 characters long';
-    }
-
-    // Validate username
-    if (!username || username.length < 3) {
-        return 'Username must be at least 3 characters long';
-    }
-
-    // Validate email
-    if (!validator.isEmail(email)) {
-        return 'Invalid email address';
-    }
-
-    // Validate password
-    if (!password || password.length < 8) {
-        return 'Password must be at least 8 characters long';
-    }
-
-    return null;
-}
-
 
 db.run(`CREATE TABLE IF NOT EXISTS bills (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     date TEXT,
     total_amount REAL
 )`);
-
-// Store session IDs to maintain conversation context
-const sessions = {};
-
-// Dialogflow Setup
-const sessionClient = new SessionsClient({
-  keyFilename: "freshcart-g9jc-bd51e18b75a7.json", // Replace with your Google Service Account Key
-});
 
 // File upload handling middleware
 const handleFileUpload = (req, res, next) => {
@@ -128,30 +91,67 @@ const handleFileUpload = (req, res, next) => {
 };
 
 // Dialogflow Intent Detection
-async function detectIntent(text, sessionId) {
-  // Use existing session ID if available
-  if (!sessions[sessionId]) {
-    sessions[sessionId] = uuid.v4();
-  }
+// async function detectIntent(text, sessionId) {
+//   // Use existing session ID if available
+//   if (!sessions[sessionId]) {
+//     sessions[sessionId] = uuid.v4();
+//   }
   
-  const sessionPath = sessionClient.projectAgentSessionPath(
-    "freshcart-g9jc", 
-    sessions[sessionId]
-  );
+//   const sessionPath = sessionClient.projectAgentSessionPath(
+//     "freshcart-g9jc", 
+//     sessions[sessionId]
+//   );
   
-  const request = {
-    session: sessionPath,
-    queryInput: {
-      text: {
-        text: text,
-        languageCode: "en",
-      },
-    },
-  };
+//   const request = {
+//     session: sessionPath,
+//     queryInput: {
+//       text: {
+//         text: text,
+//         languageCode: "en",
+//       },
+//     },
+//   };
   
-  const responses = await sessionClient.detectIntent(request);
-  return responses[0].queryResult.fulfillmentText;
-}
+//   const responses = await sessionClient.detectIntent(request);
+//   return responses[0].queryResult.fulfillmentText;
+// }
+
+
+// async function detectIntent(sessionId, queryText) {
+//     const sessionClient = new dialogflow.SessionsClient();
+//     const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
+//     const CREDENTIALS = path.join(__dirname, "freshcart-g9jc-2da75aead80e.json"); // Replace with your key file
+//     process.env.GOOGLE_APPLICATION_CREDENTIALS = CREDENTIALS;
+
+//     const projectId = "freshcart-g9jc";
+
+//     const request = {
+//         session: sessionPath,
+//         queryInput: {
+//             text: {
+//                 text: queryText,
+//                 languageCode: "en",
+//             },
+//         },
+//     };
+
+//     const responses = await sessionClient.detectIntent(request);
+//     return responses[0].queryResult.fulfillmentText;
+// }
+
+// app.post("/chat", async (req, res) => {
+//     const { message } = req.body;
+//     const sessionId = uuid.v4();
+
+//     // try {
+//     const responseText = await detectIntent(sessionId, message);
+//     res.json({ reply: responseText });
+//     // } catch (error) {
+//     //     console.error("Dialogflow Error:", error);
+//     //     res.status(500).json({ error: "Error connecting to chatbot" });
+//     // }
+// });
+
 
 // Serve images from the database
 app.get("/image/:id", (req, res) => {
@@ -212,6 +212,79 @@ app.get("/getInventory", (req, res) => {
     });
 });
 
+// Updated registration route to include address field
+app.post("/register", (req, res) => {
+    // Log to debug
+    console.log("Received data:", req.body);  // ✅ Check if request data is coming in
+
+    const { name, username, email, address, password } = req.body;
+
+    // Check if any field is missing
+    if (!name || !username || !email || !address || !password) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Check if username or email already exists
+    const checkQuery = `SELECT * FROM users WHERE username = ? OR email = ?`;
+    db.get(checkQuery, [username, email], (err, row) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ message: "Database error" });
+        }
+        if (row) {
+            return res.status(400).json({ message: "Username or Email already exists" });
+        }
+
+        // Hash password for security
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
+            if (err) {
+                console.error("Hashing error:", err);
+                return res.status(500).json({ message: "Error hashing password" });
+            }
+
+            // Insert new user with address
+            const insertQuery = `INSERT INTO users (name, username, email, password, address) VALUES (?, ?, ?, ?, ?)`;
+            db.run(insertQuery, [name, username, email, hashedPassword, address], function (err) {
+                if (err) {
+                    console.error("Insert error:", err);
+                    return res.status(500).json({ message: "Error inserting user: " + err.message });
+                }
+                res.status(201).json({ message: "User registered successfully" });
+            });
+        });
+    });
+});
+
+// Fix the login route response
+app.post("/login", (req, res) => {
+    const { username, password } = req.body;
+
+    db.get(`SELECT * FROM users WHERE username = ?`, [username], async (err, user) => {
+        if (err) {
+            console.error("Login error:", err);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+        
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Invalid Username!" });
+        }
+
+        // Compare password
+        try {
+            const validPassword = await bcrypt.compare(password, user.password);
+            if (!validPassword) {
+                return res.status(401).json({ success: false, message: "Invalid Password!" });
+            }
+            
+            res.json({ success: true, message: "Login successful!" });
+        } catch (error) {
+            console.error("Password comparison error:", error);
+            res.status(500).json({ success: false, message: "Authentication error" });
+        }
+    });
+});
+
+
 app.get("/getBills", (req, res) => {
     db.all("SELECT * FROM bills", (err, rows) => {
         if (err) {
@@ -262,48 +335,48 @@ app.put("/updateProduct/:id", handleFileUpload, (req, res) => {
 });
 
 // Improved Dialogflow Chat Route with session management
-app.post("/chat", async (req, res) => {
-  const { message, sessionId } = req.body;
+// app.post("/chat", async (req, res) => {
+//   const { message, sessionId } = req.body;
   
-  // Use provided sessionId or create a new one
-  const activeSessionId = sessionId || uuid.v4();
+//   // Use provided sessionId or create a new one
+//   const activeSessionId = sessionId || uuid.v4();
   
-  try {
-    const response = await detectIntent(message, activeSessionId);
+//   try {
+//     const response = await detectIntent(message, activeSessionId);
     
-    // Check if response includes inventory queries
-    if (response.includes("[INVENTORY_QUERY]")) {
-      // Example of integrating chatbot with database
-      const results = await new Promise((resolve, reject) => {
-        db.all("SELECT * FROM inventory", (err, rows) => {
-          if (err) reject(err);
-          else resolve(rows);
-        });
-      });
+//     // Check if response includes inventory queries
+//     if (response.includes("[INVENTORY_QUERY]")) {
+//       // Example of integrating chatbot with database
+//       const results = await new Promise((resolve, reject) => {
+//         db.all("SELECT * FROM inventory", (err, rows) => {
+//           if (err) reject(err);
+//           else resolve(rows);
+//         });
+//       });
       
-      // Format inventory data for the chatbot response
-      const formattedResults = results.map(item => 
-        `${item.name}: $${item.price} (${item.stock} ${item.unit} in stock)`
-      ).join('\n');
+//       // Format inventory data for the chatbot response
+//       const formattedResults = results.map(item => 
+//         `${item.name}: $${item.price} (${item.stock} ${item.unit} in stock)`
+//       ).join('\n');
       
-      res.json({ 
-        reply: response.replace("[INVENTORY_QUERY]", formattedResults),
-        sessionId: activeSessionId
-      });
-    } else {
-      res.json({ 
-        reply: response,
-        sessionId: activeSessionId 
-      });
-    }
-  } catch (error) {
-    console.error("Error with Dialogflow:", error);
-    res.status(500).json({ 
-      reply: "I'm sorry, I'm having trouble processing your request right now.",
-      sessionId: activeSessionId
-    });
-  }
-});
+//       res.json({ 
+//         reply: response.replace("[INVENTORY_QUERY]", formattedResults),
+//         sessionId: activeSessionId
+//       });
+//     } else {
+//       res.json({ 
+//         reply: response,
+//         sessionId: activeSessionId 
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Error with Dialogflow:", error);
+//     res.status(500).json({ 
+//       reply: "I'm sorry, I'm having trouble processing your request right now.",
+//       sessionId: activeSessionId
+//     });
+//   }
+// });
 
 
 app.get("/products", (req, res) => {
@@ -338,4 +411,8 @@ app.get("/products", (req, res) => {
 
 
 // Start Server
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+// Add this to your server.js or index.js file
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

@@ -5,71 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Grocery Store</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        .error-message {
-            color: red;
-            font-size: 0.8rem;
-            margin-top: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card p-4 shadow-lg" style="width: 350px;">
-        <h3 class="text-center mb-4">Register</h3>
+    <div class="card p-4 shadow-lg" style="width: 400px;">
+        <h3 class="text-center mb-4">Create Account</h3>
         
         <form id="registerForm">
             <div class="mb-3">
-                <label for="fullName" class="form-label">Full Name</label>
+                <label class="form-label">Full Name</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fa fa-user"></i></span>
-                    <input type="text" id="fullName" class="form-control" placeholder="Enter your name" required minlength="2">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
                 </div>
-                <div id="fullNameError" class="error-message"></div>
             </div>
 
             <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
+                <label class="form-label">Username</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fa fa-user-circle"></i></span>
-                    <input type="text" id="username" class="form-control" placeholder="Choose a username" required minlength="3">
+                    <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                    <input type="text" id="username" class="form-control" placeholder="Choose a username" required minlength="4">
                 </div>
-                <div id="usernameError" class="error-message"></div>
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label class="form-label">Email</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                     <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
                 </div>
-                <div id="emailError" class="error-message"></div>
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
+                <label class="form-label">Address</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                    <input type="password" id="password" class="form-control" placeholder="Create a password" required minlength="8">
+                    <span class="input-group-text"><i class="fas fa-home"></i></span>
+                    <input type="text" id="address" class="form-control" placeholder="Enter your address" required>
                 </div>
-                <div id="passwordError" class="error-message"></div>
             </div>
 
             <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <label class="form-label">Password</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm password" required minlength="8">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="password" class="form-control" placeholder="Create a password" required minlength="6">
                 </div>
-                <div id="confirmPasswordError" class="error-message"></div>
             </div>
 
-            <div id="generalError" class="error-message text-center mb-3"></div>
+            <div id="registerError" class="alert alert-danger text-center" style="display: none;"></div>
+            <div id="registerSuccess" class="alert alert-success text-center" style="display: none;"></div>
 
             <div class="d-grid">
-                <button type="submit" class="btn btn-success">Register</button>
+                <button type="submit" class="btn btn-primary">Register</button>
             </div>
 
             <p class="text-center mt-3">Already have an account? 
@@ -80,119 +69,71 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/your-fontawesome-key.js" crossorigin="anonymous"></script>
 
 <script>
-document.getElementById("registerForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
-    
-    // Reset all error messages
-    const errorFields = [
-        'fullName', 'username', 'email', 
-        'password', 'confirmPassword', 'general'
-    ];
-    errorFields.forEach(field => {
-        const errorElement = document.getElementById(`${field}Error`);
-        if (errorElement) errorElement.textContent = '';
-    });
+    document.getElementById("registerForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        // Hide previous messages
+        document.getElementById("registerError").style.display = "none";
+        document.getElementById("registerSuccess").style.display = "none";
+        
+        // Get form values
+        const name = document.getElementById("name").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const address = document.getElementById("address").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-    // Collect form values
-    const fullName = document.getElementById("fullName").value.trim();
-    const username = document.getElementById("username").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const confirmPassword = document.getElementById("confirmPassword").value.trim();
+        // Basic validation
+        if (username.length < 4) {
+            showError("Username must be at least 4 characters long.");
+            return;
+        }
+        if (password.length < 6) {
+            showError("Password must be at least 6 characters long.");
+            return;
+        }
+        if (/\s/.test(password)) {
+            showError("Password cannot contain spaces.");
+            return;
+        }
 
-    // Validation flags
-    let isValid = true;
-
-    // Full Name Validation
-    if (!fullName || fullName.length < 2) {
-        document.getElementById("fullNameError").textContent = 'Full name must be at least 2 characters';
-        isValid = false;
-    }
-
-    // Username Validation
-    if (!username || username.length < 3) {
-        document.getElementById("usernameError").textContent = 'Username must be at least 3 characters';
-        isValid = false;
-    }
-
-    // Email Validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-        document.getElementById("emailError").textContent = 'Please enter a valid email address';
-        isValid = false;
-    }
-
-    // Password Validation
-    if (!password || password.length < 8) {
-        document.getElementById("passwordError").textContent = 'Password must be at least 8 characters';
-        isValid = false;
-    }
-
-    // Confirm Password Validation
-    if (password !== confirmPassword) {
-        document.getElementById("confirmPasswordError").textContent = 'Passwords do not match';
-        isValid = false;
-    }
-
-    // Stop if validation fails
-    if (!isValid) return;
-
-    try {
-        const response = await fetch("http://localhost:3000/register", {
+        // Send registration request
+        fetch("http://localhost:3000/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ fullName, username, email, password })
-        });
-
-        // Log full response for debugging
-        console.log('Full Response:', response);
-
-        // Check if response is not successful
-        if (!response.ok) {
-            try {
-                const errorResult = await response.json();
-                console.error('Error Response:', errorResult);
-
-                // Display specific error messages
-                if (errorResult.message) {
-                    if (errorResult.message.includes('Username')) {
-                        document.getElementById("usernameError").textContent = errorResult.message;
-                    } else if (errorResult.message.includes('Email')) {
-                        document.getElementById("emailError").textContent = errorResult.message;
-                    } else {
-                        document.getElementById("generalError").textContent = errorResult.message;
-                    }
-                } else {
-                    document.getElementById("generalError").textContent = `Error: ${response.status} ${response.statusText}`;
-                }
-                return;
-            } catch (parseError) {
-                console.error('Error parsing error response:', parseError);
-                document.getElementById("generalError").textContent = 'An unexpected error occurred';
-                return;
+            body: JSON.stringify({ name, username, email, address, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === "User registered successfully") {
+                showSuccess("Registration successful! Redirecting to login page...");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 2000);
+            } else {
+                showError(data.message || "Registration failed. Please try again.");
             }
-        }
+        })
+        .catch(error => {
+            console.error("Registration error:", error);
+            showError("An unexpected error occurred. Please try again.");
+        });
+    });
 
-        // Parse successful response
-        const result = await response.json();
-
-        // Show success message and redirect
-        alert("Registration successful!");
-        window.location.href = "login.html";
-
-    } catch (error) {
-        // Handle network or unexpected errors
-        console.error("Detailed Error:", error);
-        
-        if (error instanceof TypeError) {
-            document.getElementById("generalError").textContent = 'Network error. Please check your connection.';
-        } else {
-            document.getElementById("generalError").textContent = 'Something went wrong. Please try again later.';
-        }
+    function showError(message) {
+        const errorDiv = document.getElementById("registerError");
+        errorDiv.textContent = message;
+        errorDiv.style.display = "block";
     }
-});
+
+    function showSuccess(message) {
+        const successDiv = document.getElementById("registerSuccess");
+        successDiv.textContent = message;
+        successDiv.style.display = "block";
+    }
 </script>
 
 </body>

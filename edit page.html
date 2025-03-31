@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Navbar Styling */
@@ -61,6 +62,12 @@
             background-color: #28a745;
             border: none;
         }
+        
+        /* Session Timeout Alert */
+        .session-alert {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -68,9 +75,17 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Online Grocery Store</a>
-        <input class="form-control w-50 mx-3" type="search" placeholder="Search for Products..">
-        <button class="btn btn-light">Search</button>
+        <a class="navbar-brand" href="index.html">
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i> FreshCart
+        </a>
+        <div class="d-flex">
+            <a href="index.html" class="btn btn-outline-light me-2">
+                <i class="fa fa-home"></i> Home
+            </a>
+            <button id="logout-btn" class="btn btn-outline-light">
+                <i class="fa fa-sign-out"></i> Logout
+            </button>
+        </div>
     </div>
 </nav>
 
@@ -79,50 +94,58 @@
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3 sidebar">
-            <h5>MY ACCOUNT</h5>
+            <h5><a href="userdashboard.html">MY ACCOUNT</a></h5>
             <ul>
-                <li><a href="edit page.html">Edit Profile</a></li>
-                <li><a href="AddAddress.html">Delivery Addresses</a></li>
-                <li><a href="#">Shopping List</a></li>
-                <li><a href="my order.html">My Orders</a></li>
-                <li><a href="#">Customer Service</a></li>
+                <li><a href="edit page.html"><i class="fa fa-user"></i> Edit Profile</a></li>
+                <li><a href="AddAddress.html"><i class="fa fa-map-marker"></i> Delivery Addresses</a></li>
+                <li><a href="#"><i class="fa fa-list"></i> Shopping List</a></li>
+                <li><a href="my order.html"><i class="fa fa-shopping-bag"></i> My Orders</a></li>
+                <li><a href="#"><i class="fa fa-headphones"></i> Customer Service</a></li>
             </ul>
         </div>
 
         <!-- Edit Profile Form -->
         <div class="col-md-9">
+            <!-- Alert for session timeout -->
+            <div class="alert alert-warning session-alert" id="session-alert">
+                You are not logged in. Please <a href="login.html">login</a> to view your profile.
+            </div>
+            
             <div class="edit-card">
                 <h4>Edit Profile</h4>
                 <hr>
-                <form>
+                <div class="loading" id="loading-indicator">
+                    Loading your profile information...
+                </div>
+                <form id="edit-profile-form" style="display: none;">
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">First Name*</label>
-                            <input type="text" class="form-control" value="Optimus">
+                            <input type="text" class="form-control" id="first-name">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Last Name*</label>
-                            <input type="text" class="form-control" value="Prime">
+                            <input type="text" class="form-control" id="last-name">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email Address*</label>
-                        <input type="email" class="form-control" value="primeoptimus7870@gmail.com">
+                        <input type="email" class="form-control" id="email">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Mobile Number*</label>
-                        <input type="text" class="form-control" value="9082937753">
+                        <input type="text" class="form-control" id="phone">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control">
+                        <input type="date" class="form-control" id="dob">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Gender</label>
-                        <select class="form-select">
-                            <option selected>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
+                        <select class="form-select" id="gender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-success">Save Changes</button>
@@ -133,5 +156,78 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const username = localStorage.getItem('username');
+    
+    if (!isLoggedIn || !username) {
+        // User is not logged in, show session alert
+        document.getElementById('session-alert').style.display = 'block';
+        document.getElementById('loading-indicator').style.display = 'none';
+        return;
+    }
+    
+    // Simulate fetching user data (in a real application, this would be an API call)
+    // For demonstration, we'll use the stored username to simulate a database lookup
+    setTimeout(() => {
+        // Hide loading indicator
+        document.getElementById('loading-indicator').style.display = 'none';
+        document.getElementById('edit-profile-form').style.display = 'block';
+        
+        // Populate user data from localStorage or session
+        // In a real application, this data would come from your database
+        const nameParts = username.split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+        
+        const userData = {
+            firstName: firstName,
+            lastName: lastName,
+            email: username.toLowerCase().replace(/\s+/g, '') + '@example.com',
+            phone: '+91 9082937753',
+            // Default values for fields that might not be in the dashboard yet
+            dob: '',
+            gender: 'Male'
+        };
+        
+        // Populate form fields with user data
+        document.getElementById('first-name').value = userData.firstName;
+        document.getElementById('last-name').value = userData.lastName;
+        document.getElementById('email').value = userData.email;
+        document.getElementById('phone').value = userData.phone;
+        document.getElementById('dob').value = userData.dob;
+        document.getElementById('gender').value = userData.gender;
+    }, 1000);
+    
+    // Handle form submission
+    document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const firstName = document.getElementById('first-name').value;
+        const lastName = document.getElementById('last-name').value;
+        const fullName = firstName + (lastName ? ' ' + lastName : '');
+        
+        // In a real application, you would send this data to your server
+        // For now, we'll just update localStorage
+        localStorage.setItem('username', fullName);
+        
+        // Show success message
+        alert('Profile updated successfully!');
+        
+        // Redirect to dashboard
+        window.location.href = 'userdashboard.html';
+    });
+    
+    // Handle logout
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('username');
+        window.location.href = 'login.html';
+    });
+});
+</script>
 </body>
 </html>
